@@ -97,3 +97,6 @@ git config --global user.email [your email]
 ```
 ssh git@github.com
 ```
+### ***SSH Setup***
+
+Generate SSH Key using instructions from Github and then copy public SSH Key to Github account

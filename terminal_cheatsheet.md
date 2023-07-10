@@ -61,10 +61,11 @@ git rm --cached <filename>
 ### ***Commit Files***
 ```
 git commit -m "[enter message]"
+git commit --amend      //ammends most recent
 ```
 ### ***Status and Log***
 ```
-git status
+git status / gst
 git log
 ```
 Flag for log: --raw  (can see which files were added or modified)
@@ -73,6 +74,9 @@ Flag for log: --raw  (can see which files were added or modified)
 ```
 git remote add origin [SSH URL]
 ```
+
+origin is the alias for the SSH URL
+
 ### ***Downloading Repository***
 ```
 git clone [SSH URL]
@@ -91,6 +95,19 @@ git pull origin main
 git config --global user.name "[your name]"
 git config --global user.email [your email]
 ```
+
+### ***Previous Versions***
+
+```
+git checkout [ID from git log]
+```
+
+### ***Change Branches***
+
+```
+git checkout main
+```
+
 ## **Extra**
 
 ### ***Check SSH Key***

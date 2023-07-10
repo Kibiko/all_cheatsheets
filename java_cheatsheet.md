@@ -1,5 +1,12 @@
  # Java Cheatsheet
 
+# Table of Contents
+1. [Starting Off](#starting-off)
+2. [Types](#types)
+3. [Logical Operators](#logical-operators)
+4. [Control Flow](#control-flow)
+5. [Arrays and ArrayLists](#arrays)
+
 ## ***Starting Off***
 
 **Shortcut:** main + ->|
@@ -132,4 +139,48 @@ can extend the loop for else if by putting statement after :, e.g. `String resul
 ```java
 for(int i = 0 : i < n : i++ ) { clause } //loops over a number until i<n 
 for(int i : n) { clause } //same as for i in n
+```
+
+### ***Arrays***
+
+Arrays are harder to resize than arraylists
+
+```java
+String[] names = new String[4] //defines an empty array of length 4, new calls constructor
+String[] trainers = {"Colin","Zsolt","Ed"};
+int[][] myNumbers = { {1,2,3} , {4,5,6} };
+```
+Accessing the values of the array is the same as Python, e.g. `trainers[0]`
+
+|Method|Syntax|
+|---|---|
+|Length of the array|`myArray.length`|
+
+### ***ArrayList***
+
+ArrayList is a resizable array that can be found in `java.util` package
+
+```java
+import java.util.ArrayList; //set before public class
+
+ArrayList<[type]> cars = new ArrayList();
+```
+
+|Method|Syntax|
+|---|---|
+|Add elements|`myArrayList.add()`|
+|Accessing elements|`~ .get([index])`|
+|Changing elements|`~ .set([index], value)`|
+|Remove an element from index or first value|`~ .remove([index] or value)`|
+|Clear entire list|`~ .clear()`|
+|Find the size|`~ .size()`|
+|Find index of element|`~ .indexOf(value)`|
+
+**Sorting ArrayList**
+
+```java
+import java.util.Collections;
+
+Collections.sort(myArrayList); //sorts alphabetically or numerically
+Collections.sort(myArrayList, Collections.reverseOrder())
 ```

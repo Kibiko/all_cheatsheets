@@ -161,7 +161,7 @@ ArrayList is a resizable array that can be found in `java.util` package
 ```java
 import java.util.ArrayList; //set before public class
 
-ArrayList<[type]> cars = new ArrayList();
+ArrayList<[type]> cars = new ArrayList<>();
 ```
 
 |Method|Syntax|Extra|
@@ -174,13 +174,27 @@ ArrayList<[type]> cars = new ArrayList();
 |Find the size|`~ .size()`|
 |Find index of element|`~ .indexOf(value)`|
 
-**Sorting ArrayList**
+**Initialising ArrayList with Collections**
 
 ```java
 import java.util.Collections;
 
-Collections.sort(myArrayList);  //sorts alphabetically or numerically
+ArrayList<Integer> numbers = new ArrayList<>();
+Collections.addAll(numbers, 1, 1, 4, 2, 7, 1, 6, 15, 13, 99, 7);
+```
+
+**Sorting ArrayList**
+
+```java
+Collections.sort(myArrayList);  //sorts alphabetically or numerically, DESTRUCTIVE METHOD
 Collections.sort(myArrayList, Collections.reverseOrder())  //reverse order
+```
+
+**Common Maths**
+
+```java
+Collections.max(myArrayList);
+Collections.min(myArrayList);
 ```
 
 ### ***Loops***
@@ -192,7 +206,7 @@ for(int i = 0 ; i < n ; i++ ) { //loops over a number until i<n,
   clause                        // can start at different index or 
   }                             // increment differently, CLASSIC
 
-for(int i : n) { //same as for i in n, FOR EACH SYNTAX
+for(int i : n) { //same as for i in n, FOR EACH SYNTAX, "syntactic sugar" = same as above
   clause 
   } 
 ```
@@ -219,3 +233,6 @@ for (int i = 0 ; i<colours.size(); i++ ){
 |---|---|---|
 |Find value of character| `String.charAt([index])`| finds the character at index of string e.g. beginning character|
 |Upper and lowercase| `~ .toUpperCase() / .toLowerCase()`|
+
+
+[Back to Top](#java-cheatsheet)

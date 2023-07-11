@@ -6,6 +6,8 @@
 3. [Logical Operators](#logical-operators)
 4. [Control Flow](#control-flow)
 5. [Arrays and ArrayLists](#arrays)
+6. [Loops](#loops)
+7. [Useful Methods](#useful-methods)
 
 ## ***Starting Off***
 
@@ -135,12 +137,6 @@ System.out.println(results);
 
 can extend the loop for else if by putting statement after :, e.g. `String results = labHandedIn && studentPresent ? "Great" : labHandedIn || studentPresent ? "Bad" : "No Clue";`
 
-**Loops**
-```java
-for(int i = 0 : i < n : i++ ) { clause } //loops over a number until i<n 
-for(int i : n) { clause } //same as for i in n
-```
-
 ### ***Arrays***
 
 Arrays are harder to resize than arraylists
@@ -160,15 +156,17 @@ Accessing the values of the array is the same as Python, e.g. `trainers[0]`
 
 ArrayList is a resizable array that can be found in `java.util` package
 
+**Shortcut**: click on `ArrayList<[type]>` and then, [option + enter] to import class
+
 ```java
 import java.util.ArrayList; //set before public class
 
 ArrayList<[type]> cars = new ArrayList();
 ```
 
-|Method|Syntax|
-|---|---|
-|Add elements|`myArrayList.add()`|
+|Method|Syntax|Extra|
+|---|---|--|
+|Add elements|`myArrayList.add()`| [cmd + d] to copy selected line, can add `([index],value)` to inset into specific place
 |Accessing elements|`~ .get([index])`|
 |Changing elements|`~ .set([index], value)`|
 |Remove an element from index or first value|`~ .remove([index] or value)`|
@@ -181,6 +179,43 @@ ArrayList<[type]> cars = new ArrayList();
 ```java
 import java.util.Collections;
 
-Collections.sort(myArrayList); //sorts alphabetically or numerically
-Collections.sort(myArrayList, Collections.reverseOrder())
+Collections.sort(myArrayList);  //sorts alphabetically or numerically
+Collections.sort(myArrayList, Collections.reverseOrder())  //reverse order
 ```
+
+### ***Loops***
+
+**Shortcut:** `fori` + ->|
+
+```java
+for(int i = 0 ; i < n ; i++ ) { //loops over a number until i<n, 
+  clause                        // can start at different index or 
+  }                             // increment differently, CLASSIC
+
+for(int i : n) { //same as for i in n, FOR EACH SYNTAX
+  clause 
+  } 
+```
+**Break and Continue**
+
+Break stops the for loop from running, therefore if silver is the second element, only the first element is printed
+
+Continue instead, skips over silver and continues the for loop
+
+```java
+for (int i = 0 ; i<colours.size(); i++ ){
+            if (colours.get(i).equals("silver")){
+                break/continue;
+            }
+            System.out.println(colours.get(i));
+        }
+```
+
+### ***Useful Methods***
+
+**String**
+
+|Method|Syntax|Extra|
+|---|---|---|
+|Find value of character| `String.charAt([index])`| finds the character at index of string e.g. beginning character|
+|Upper and lowercase| `~ .toUpperCase() / .toLowerCase()`|

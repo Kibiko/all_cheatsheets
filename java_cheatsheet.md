@@ -8,6 +8,7 @@
 5. [Arrays and ArrayLists](#arrays)
 6. [Loops](#loops)
 7. [Useful Methods](#useful-methods)
+8. [Object Oriented Programming](#object-oriented-programming)
 
 ## ***Starting Off***
 
@@ -190,7 +191,7 @@ Collections.sort(myArrayList);  //sorts alphabetically or numerically, DESTRUCTI
 Collections.sort(myArrayList, Collections.reverseOrder())  //reverse order
 ```
 
-**Common Maths**
+**Common maths**
 
 ```java
 Collections.max(myArrayList);
@@ -233,6 +234,109 @@ for (int i = 0 ; i<colours.size(); i++ ){
 |---|---|---|
 |Find value of character| `String.charAt([index])`| finds the character at index of string e.g. beginning character|
 |Upper and lowercase| `~ .toUpperCase() / .toLowerCase()`|
+
+### ***Object Oriented Programming***
+
+*Name of class must begin with capital letter and match file name !!*
+
+**Unified Modelling Language (UML) - Class diagrams**
+
+|Person||
+|-------|-
+|**Properties** |
+|- name : String|
+|- town : String|
+|- completedCourse : boolean|
+|**Behaviour** *(same as methods)*|
+|+ greet(String) : String|
+|+ finishCourse() : void|
+
+`-` is for private, `+` is for public
+
+**Creating a class constructor, properties and behaviours in class Person.java**
+
+```java
+public class Person {
+
+    //PROPERTIES
+
+    String name;
+    String town;
+    boolean completedCourse;
+
+    //CONSTRUCTOR
+
+    public Person(String inputName, String inputTown){ // <----- this is the constructor 
+        this.name = inputName;                         // that is called when an object 
+        this.town = inputTown;                         // of a class is created
+        this.completedCourse = false; //sets every new person's to false
+    }
+
+    //BEHAVIOURS
+
+    String greet(String timeOfDay){
+        return("Good " + timeOfDay + " "+ this.name + "!");
+    }
+
+    void finishCourse(){
+        this.completedCourse = true;
+    }
+}
+```
+Person is now a valid data type that can be used to create new array list e.g. `ArrayList<Person> people = new ArrayList<>();`
+
+**Creating objects and calling behaviours in Runner.java**
+```java
+public class Runner {
+
+    public static void main(String[] args) {
+
+        Person person = new Person("Kevin","London");  //creates object by calling the 
+        Person person2 = new Person("Sandra","Morelia");  //constructor in Person.java
+        
+        String personGreeting = person.greet("morning");
+        String person2Greeting = person2.greet("evening");
+
+        System.out.println(personGreeting);
+        System.out.println(person2Greeting);   
+
+        person.finishCourse();
+    }
+}
+```
+
+**ArrayList with new type of data**
+
+```java
+        ArrayList<Person> people = new ArrayList<>();
+        people.add(person);
+        people.add(person2);
+
+        for (Person human : people) {
+            System.out.println(human.name +" "+ human.town +" "+ human.completedCourse);
+        }
+```
+
+|Method|Syntax|Extra|
+|----|----|-----|
+|Calling properties|`object.property`| e.g. `person.name`, `person2.town`|
+
+**Private properties *(getters and setters)***
+
+In general, properties are private, behaviours are public
+
+```java
+        private String name;
+
+        String getName(){   // GETTERS
+            return this.name;
+        }
+
+        void setName(String updatedName){    // SETTERS
+            this.name = updatedName;
+        }
+```
+
 
 
 [Back to Top](#java-cheatsheet)

@@ -1,6 +1,8 @@
  # Java Cheatsheet
 
 # Table of Contents
+
+0. [Tips with IntelliJ](#intellij-tips)
 1. [Starting Off](#starting-off)
 2. [Types](#types)
 3. [Logical Operators](#logical-operators)
@@ -9,6 +11,16 @@
 6. [Loops](#loops)
 7. [Useful Methods](#useful-methods)
 8. [Object Oriented Programming](#object-oriented-programming)
+9. [Testing](#testing)
+10. [TDD with FizzBuzz](#tdd-test-driven-development)
+
+## ***IntelliJ Tips***
+
+|Command|Description|
+|----|-----|
+|`cmd + <- or ->`|move to the start or end of the line|
+|`fn + backspace`|foward delete|
+|`[highlight text] + [ or ( or "`|encompasses text in brackets or quotes|
 
 ## ***Starting Off***
 
@@ -101,6 +113,12 @@ Reference types (non-primitive)
 Large numbers can be represented with e or E for powers of 10,
 
 e.g. `float f1 = 35e6f`
+
+**Converting Types**
+
+|Method|Syntax|
+|---|----|
+|number to String|`String.valueOf([int/double/float])`|
 
 ### ***Logical Operators***
 |Operator|Description|
@@ -273,6 +291,10 @@ public class Person {
         this.completedCourse = false; //sets every new person's to false
     }
 
+    public ShoppingTrolley(){
+        this.shopping = new ArrayList<>();  // this constructs an empty arraylist
+    }
+
     //BEHAVIOURS
 
     String greet(String timeOfDay){
@@ -329,15 +351,213 @@ In general, properties are private, behaviours are public
 ```java
         private String name;
 
-        String getName(){   // GETTERS
+        public String getName(){   // GETTERS
             return this.name;
         }
 
-        void setName(String updatedName){    // SETTERS
+        public void setName(String updatedName){    // SETTERS
             this.name = updatedName;
         }
 ```
+### ***Testing***
 
+.xml is a markup language soon to be taken over by json
 
+**Setting up testing in pom.xml**
+
+Include dependencies below the properties and if red, Maven tab on the side to reload Maven project
+```xml
+    <dependencies>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.8.2</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>3.22.0</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+```
+Tests are put into the **GREEN** folder under src/tests/java as a new class
+
+**Import classes junit and assert**
+
+```java
+import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+```
+
+**Initialising tests**
+```java
+public class MainTest {
+
+    @Test                        //ANNOTATIONS - put above a method to have 
+    public void myFirstTest(){   // some special behaviour to exhibit
+        // ENTER TESTS HERE
+    }
+}
+```
+
+**Assertions**
+
+```java
+        // BDD -behaviour driven development
+
+        //Given... (Arrange)
+        String input = "HElLo";
+        //When... (Act)
+        String actual = input.toLowerCase();
+        //Then... (Assert)
+        String expected = "hello";
+        assertThat(actual).isEqualTo(expected);
+```
+
+**Calculator example**
+
+*Calculator.java*
+
+```java
+public class Calculator {
+
+    public int add(int number1, int number2){
+        return number1 + number2;
+    }
+
+    public int subtract(int number1, int number2){
+        return number1 - number2;
+    }
+}
+
+```
+
+*CalculatorTest.java*
+
+```java
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+
+public class CalculatorTest {
+
+    private Calculator calculator;
+
+    @BeforeEach
+    public void setUp(){     // Sets up before each test
+        calculator = new Calculator();
+    }
+
+    @Test
+    public void canAddNumbers(){
+        //Given
+        // This is set outside the tests under @BeforeEach
+        //When
+        int actual = calculator.add(4,9);
+        //Then
+        int expected = 13;
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    public void canSubtractNumbers(){
+
+        int actual = calculator.subtract(2,7);
+        int expected = -5;
+        assertThat(actual).isEqualTo(expected);
+    }
+
+}
+```
+
+### **TDD (Test Driven Development)**
+
+1. Plan criteria for the code to pass
+2. Write tests for the code
+3. Write code that passes the tests
+
+E.g. FizzBuzz problem :
+
+- any number divisible by 3 should give back fizz
+- any number divisible by 5 should give back buzz
+- any number divisible by both should give back fizzbuzz
+- any number not divisible by either should give back the number itself
+
+FizzBuzzTest.java
+
+```java
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+
+public class FizzBuzzTest {
+
+    private FizzBuzz fizzBuzz;
+
+    @BeforeEach
+    public void setUp(){
+        fizzBuzz = new FizzBuzz();
+    }
+
+    @Test
+    public void canReturnFizz(){
+        //Given
+        //When
+        String result = fizzBuzz.getFizzBuzz(3);
+        //Then
+        String expected = "Fizz";
+        assertThat(result).isEqualTo(expected);
+    }
+
+    @Test
+    public void canReturnBuzz(){
+        String result = fizzBuzz.getFizzBuzz(5);
+        String expected = "Buzz";
+        assertThat(result).isEqualTo(expected);
+    }
+
+    @Test
+    public void canReturnFizzBuzz(){
+        String result = fizzBuzz.getFizzBuzz(15);
+        String expected = "FizzBuzz";
+        assertThat(result).isEqualTo(expected);
+    }
+
+    @Test
+    public void canReturnNumberAsString(){
+        String result = fizzBuzz.getFizzBuzz(17);
+        String expected = "17";
+        assertThat(result).isEqualTo(expected);
+    }
+
+}
+```
+
+FizzBuzz.java
+
+```java
+public class FizzBuzz {
+
+    public String getFizzBuzz(int number){
+        if(number %3 == 0 && number %5 == 0){
+            return "FizzBuzz";
+        }
+
+        if (number %3 == 0){
+            return "Fizz";
+        }
+
+        if (number %5 == 0){
+            return "Buzz";
+        }
+        return String.valueOf(number);
+    }
+}
+```
+Run FizzBuzz test with coverage by right clicking the test
 
 [Back to Top](#java-cheatsheet)

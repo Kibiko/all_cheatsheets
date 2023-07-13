@@ -41,7 +41,7 @@ Every line of code that runs in Java must be inside a **class**.
 Every program must contain `main()`.
 
 
-### ***Printing***
+### **Printing**
 
 **Shortcut:**  sout + ->|
 
@@ -60,7 +60,7 @@ System.out.println(someText.indexOf("world")); //first instance including spaces
 
 These are methods.
 
-### ***Commenting***
+### **Commenting**
 
 **Shortcut:** Highlight text -> `cmd + /`
 
@@ -72,7 +72,7 @@ which spans
 multiple lines */
 ```
 
-### ***Types***
+## ***Types***
 
 |Type|Description|
 |---|---|
@@ -93,7 +93,7 @@ e.g. declaration of variable:
 
 `String name = "Kevin";`
 
-### ***Primitive Data Types***
+### **Primitive Data Types**
 
 Stored in memory with an associated value. Primitive types always start with lower case letter.
 
@@ -120,7 +120,7 @@ e.g. `float f1 = 35e6f`
 |---|----|
 |number to String|`String.valueOf([int/double/float])`|
 
-### ***Logical Operators***
+## ***Logical Operators***
 |Operator|Description|
 |---|---|
 |`&&`|and|
@@ -131,7 +131,7 @@ e.g. `float f1 = 35e6f`
 
 `"cat".equals("cat")` rather than `"cat" == "cat"`
 
-### ***Control Flow***
+## ***Control Flow***
 
 **IF**
 
@@ -156,7 +156,7 @@ System.out.println(results);
 
 can extend the loop for else if by putting statement after :, e.g. `String results = labHandedIn && studentPresent ? "Great" : labHandedIn || studentPresent ? "Bad" : "No Clue";`
 
-### ***Arrays***
+## ***Arrays***
 
 Arrays are harder to resize than arraylists
 
@@ -171,7 +171,7 @@ Accessing the values of the array is the same as Python, e.g. `trainers[0]`
 |---|---|
 |Length of the array|`myArray.length`|
 
-### ***ArrayList***
+## ***ArrayList***
 
 ArrayList is a resizable array that can be found in `java.util` package
 
@@ -217,7 +217,7 @@ Collections.max(myArrayList);
 Collections.min(myArrayList);
 ```
 
-### ***Loops***
+## ***Loops***
 
 **Shortcut:** `fori` + ->|
 
@@ -245,7 +245,7 @@ for (int i = 0 ; i<colours.size(); i++ ){
         }
 ```
 
-### ***Useful Methods***
+## ***Useful Methods***
 
 **String**
 
@@ -254,7 +254,7 @@ for (int i = 0 ; i<colours.size(); i++ ){
 |Find value of character| `String.charAt([index])`| finds the character at index of string e.g. beginning character|
 |Upper and lowercase| `~ .toUpperCase() / .toLowerCase()`|
 
-### ***Object Oriented Programming***
+## ***Object Oriented Programming***
 
 *Name of class must begin with capital letter and match file name !!*
 
@@ -359,7 +359,7 @@ In general, properties are private, behaviours are public
             this.name = updatedName;
         }
 ```
-### ***Testing***
+## ***Testing***
 
 .xml is a markup language soon to be taken over by json
 
@@ -473,7 +473,7 @@ public class CalculatorTest {
 }
 ```
 
-### **TDD (Test Driven Development)**
+## ***TDD (Test Driven Development)***
 
 1. Plan criteria for the code to pass
 2. Write tests for the code
@@ -559,5 +559,13 @@ public class FizzBuzz {
 }
 ```
 Run FizzBuzz test with coverage by right clicking the test
+
+## ***Multiple Classes***
+
+### **Chicken Farm Example**
+
+Chicken Farm UML
+
+![alt text](/images/chicken_farm.png "Chicken Farm UML")
 
 [Back to Top](#java-cheatsheet)

@@ -193,7 +193,7 @@ ArrayList<[type]> cars = new ArrayList<>();
 |Clear entire list|`~ .clear()`|
 |Find the size|`~ .size()`|
 |Find index of element|`~ .indexOf(value)`|
-|Find if list contains|`~ .contains(value)`|
+|Find if list contains (boolean)|`~ .contains(value)`|
 
 **Initialising ArrayList with Collections**
 

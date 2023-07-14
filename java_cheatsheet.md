@@ -13,6 +13,7 @@
 8. [Object Oriented Programming](#object-oriented-programming)
 9. [Testing](#testing)
 10. [TDD with FizzBuzz](#tdd-test-driven-development)
+11. [Multiple Classes](#multiple-classes)
 
 ## ***IntelliJ Tips***
 
@@ -564,8 +565,57 @@ Run FizzBuzz test with coverage by right clicking the test
 
 ### **Chicken Farm Example**
 
-Chicken Farm UML
+Chicken Farm UML (Planning Phase)
 
 ![alt text](/images/chicken_farm.png "Chicken Farm UML")
+
+Refer to Github code! It's too much to paste here. The class diagram should be updated with arguments and outputs.
+
+### **General Layouts**
+
+*For TDD (test driven development)*:
+
+ClassTest.java
+
+```java
+[                         ] // IMPORTS
+
+public class GalleryTest{
+
+    [          ] //Properties that need to be accessed e.g. Gallery gallery
+
+    @BeforeEach
+    [              ] //Setup scenario that you want to test on
+    [              ] // e.g. gallery with artworks added
+    [              ] // gallery = new Gallery(String name);
+
+    @Test
+    [              ] //Create tests that you want your methods to pass
+
+    @Test
+    [              ] //e.g. assertThat(gallery.getTill).isEqualTo(20)
+}
+```
+
+Class.java
+
+```java
+[                         ] //IMPORTS
+
+public class Gallery{
+
+    [              ] //PROPERTIES
+    [              ]
+
+    public Gallery(String name){ //CONSTRUCTOR
+        [               ] //assign the initial values .e.g this.name = name;
+    }
+
+    [              ] //BEHAVIOURS (or methods)
+    [              ] // e.g. public void setName(){    }
+    [              ]
+    [              ]
+}
+```
 
 [Back to Top](#java-cheatsheet)

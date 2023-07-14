@@ -386,10 +386,11 @@ Include dependencies below the properties and if red, Maven tab on the side to r
 ```
 Tests are put into the **GREEN** folder under src/tests/java as a new class
 
-**Import classes junit and assert**
+**Import classes junit, assert and beforeeach**
 
 ```java
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 ```
 
@@ -492,7 +493,6 @@ FizzBuzzTest.java
 ```java
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class FizzBuzzTest {

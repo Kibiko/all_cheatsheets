@@ -571,6 +571,14 @@ Chicken Farm UML (Planning Phase)
 
 Refer to Github code! It's too much to paste here. The class diagram should be updated with arguments and outputs.
 
+### **Art Gallery Example**
+
+***Acknowledgement:*** Thank you Lamees for putting up with my hecticness as we tackled this paired programming lab. I am happy that we worked together to get the MVP done before dinner time through our seamless teamwork. I hope we get to work together again during the rest of the bootcamp.
+
+![alt text](/images/art_gallery_classdiagram.png "Art Gallery UML")
+
+
+
 ### **General Layouts**
 
 *For TDD (test driven development)*:

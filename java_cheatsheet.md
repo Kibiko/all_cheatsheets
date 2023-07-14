@@ -22,6 +22,7 @@
 |`cmd + <- or ->`|move to the start or end of the line|
 |`fn + backspace`|foward delete|
 |`[highlight text] + [ or ( or "`|encompasses text in brackets or quotes|
+|`cmd + [click]`|can jump from one error to method in another file|
 
 ## ***Starting Off***
 
@@ -259,6 +260,15 @@ for (int i = 0 ; i<colours.size(); i++ ){
 
 *Name of class must begin with capital letter and match file name !!*
 
+|Parts|Description|
+|-----|--------|
+|Classes| The blueprint of the program that contains the below|
+|Class -> State| These are the properties and asstributes |
+|Class -> Behaviour| These are the methods (attached to the object e.g .sellArt())|
+|Object| Class instances that can use the methods and has the properties defined above|
+|Instance variable| Properties that apply to the entire class|
+|Local variable| Properties that apply only to the method |
+
 **Unified Modelling Language (UML) - Class diagrams**
 
 |Person||
@@ -273,7 +283,7 @@ for (int i = 0 ; i<colours.size(); i++ ){
 
 `-` is for private, `+` is for public
 
-**Creating a class constructor, properties and behaviours in class Person.java**
+**Creating a constructor, properties and behaviours in class Person.java**
 
 ```java
 public class Person {
@@ -419,7 +429,7 @@ public class MainTest {
         assertThat(actual).isEqualTo(expected);
 ```
 
-**Calculator example**
+### **Calculator example**
 
 *Calculator.java*
 
@@ -567,7 +577,7 @@ Run FizzBuzz test with coverage by right clicking the test
 
 Chicken Farm UML (Planning Phase)
 
-![alt text](/images/chicken_farm.png "Chicken Farm UML")
+![Chicken Farm UML](/images/chicken_farm.png "Chicken Farm UML")
 
 Refer to Github code! It's too much to paste here. The class diagram should be updated with arguments and outputs.
 
@@ -575,7 +585,7 @@ Refer to Github code! It's too much to paste here. The class diagram should be u
 
 ***Acknowledgement:*** Thank you Lamees for putting up with my hecticness as we tackled this paired programming lab. I am happy that we worked together to get the MVP done before dinner time through our seamless teamwork. I hope we get to work together again during the rest of the bootcamp.
 
-![alt text](/images/art_gallery_classdiagram.png "Art Gallery UML")
+![Art Gallery UML](/images/art_gallery_classdiagram.png "Art Gallery UML")
 
 
 

@@ -649,7 +649,7 @@ public abstract class Animal {  //abstract class means no longer able
                                 //or parrots
     //PROPERTIES
 
-    private String name;
+    protected String name; //like private plus, available to class and extended 
 
     //CONSTRUCTOR
 
@@ -706,5 +706,15 @@ At the same time, new methods can be added specifically to lion that makes it un
 More child classes can be added, refer to GitHub code for parrots.
 
 Making parent class abstract means you can no longer directly test it, therefore AnimalTest.java is no longer needed.
+
+### **Inheritance Chan**
+
+We can make multiple super classes for further categorisation. Longer inheritance chains can be a con so be careful with the length of your inheritance chain.
+
+![polymorphism](/images/inheritance_chain.png)
+
+If subclass has two inheritance chains, we encounter the "Diamond Problem". A class **can not** extend to multple parent classes in Java. However other languages such as C++ and Python will allow you to extend to multiple.
+
+The # is for protected which means property is accessible from class and also extended classes.
 
 [Back to Top](#java-cheatsheet)

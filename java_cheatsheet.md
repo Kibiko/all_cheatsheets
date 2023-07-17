@@ -14,6 +14,7 @@
 9. [Testing](#testing)
 10. [TDD with FizzBuzz](#tdd-test-driven-development)
 11. [Multiple Classes](#multiple-classes)
+12. [Inheritance](#inheritance)
 
 ## ***IntelliJ Tips***
 
@@ -498,7 +499,7 @@ E.g. FizzBuzz problem :
 - any number divisible by both should give back fizzbuzz
 - any number not divisible by either should give back the number itself
 
-FizzBuzzTest.java
+*FizzBuzzTest.java*
 
 ```java
 import org.junit.jupiter.api.BeforeEach;
@@ -548,7 +549,7 @@ public class FizzBuzzTest {
 }
 ```
 
-FizzBuzz.java
+*FizzBuzz.java*
 
 ```java
 public class FizzBuzz {
@@ -587,13 +588,11 @@ Refer to Github code! It's too much to paste here. The class diagram should be u
 
 ![Art Gallery UML](/images/art_gallery_classdiagram.png "Art Gallery UML")
 
-
-
 ### **General Layouts**
 
 *For TDD (test driven development)*:
 
-ClassTest.java
+*ClassTest.java*
 
 ```java
 [                         ] // IMPORTS
@@ -615,7 +614,7 @@ public class GalleryTest{
 }
 ```
 
-Class.java
+*Class.java*
 
 ```java
 [                         ] //IMPORTS
@@ -635,5 +634,77 @@ public class Gallery{
     [              ]
 }
 ```
+
+## ***Inheritance***
+
+### **Zoo Example**
+
+![polymorphism](/images/polymorphism.png)
+
+*ParentClass.java*
+
+```java
+public abstract class Animal {  //abstract class means no longer able
+                                //to make new Animal class, instead make lion
+                                //or parrots
+    //PROPERTIES
+
+    private String name;
+
+    //CONSTRUCTOR
+
+    public Animal(String name){
+        this.name = name;
+    }
+
+    //BEHAVIOUR
+
+    public String makeNoise(){
+        return "Hello, my name is " + this.name + ".";
+    }
+
+    public String eat(){
+        return "Mmmm, that was tasty!";
+    }
+
+}
+```
+
+*ChildClass.java*
+
+```java
+public class Lion extends Animal{  //extends to parent class
+
+    //PROPERTIES (specific to lion class)
+
+    private boolean canWaitToBeKing;
+    private double jumpHeight;
+
+    //CONSTRUCTOR
+
+    public Lion(String name, boolean canWaitToBeKing){
+        super(name); //HAS TO BE FIRST
+                     // whatever the parent class does, this does it too
+        this.canWaitToBeKing = canWaitToBeKing;
+    }
+
+    //BEHAVIOUR
+
+    @Override // optional tag, but clearer to external reader
+    public String makeNoise(){ //overrides parent method
+        return "ROAR";
+    }
+}
+```
+
+Therefore methods in parent class can be called by lion,
+
+e.g. `lion.makeNoise(), lion.eat()`
+
+At the same time, new methods can be added specifically to lion that makes it unique to other animals that may override the parent method just for that class.
+
+More child classes can be added, refer to GitHub code for parrots.
+
+Making parent class abstract means you can no longer directly test it, therefore AnimalTest.java is no longer needed.
 
 [Back to Top](#java-cheatsheet)

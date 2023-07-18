@@ -717,4 +717,80 @@ If subclass has two inheritance chains, we encounter the "Diamond Problem". A cl
 
 The # is for protected which means property is accessible from class and also extended classes.
 
+### **Bakery Example**
+
+Code is on GitHub under bakery_lab.
+
+![bakery](/images/bakery_lab.png)
+
+### **Inheritance Extras**
+
+|Concept|Implementation|Description|
+|----|-----|-----|
+|Abstract Class|`public abstract class Cake`|Creates an abstract class that can't be called but provides the common properties for subclasses (child classes)|
+|Method Overload|`setMessages(String) , setMessages(String, String)`|Methods with the same name but different set of arguments are allowed|
+|Abstract Method|`public abstract double getSellPrice();`|Parent directory has an abstract method that is implemented and defined in all subclasses|
+|Interface|`interface Extras{public int getEggsNeeded();}`|Creates an interface that subclasses can 'implements' to rather than extend to|
+
+*AbstractClass.java*
+
+```java
+//Cake.java
+public abstract class Cake{}
+
+//Cheesecake.java
+public class Cheesecake extends Cake{}
+```
+
+*MethodOverload.java*
+
+```java
+    public void setMessages(String message1){  //OVERLOADED METHODS
+        this.decorativeMessages = new ArrayList<>();
+        this.decorativeMessages.add(message1);
+    }
+
+    public void setMessages(String message1, String message2){
+        this.decorativeMessages = new ArrayList<>();
+        this.decorativeMessages.add(message1);
+        this.decorativeMessages.add(message2);
+```
+
+*AbstractMethod.java*
+
+```java
+//Cake.java
+    public abstract double calcSellPrice();
+
+//RedVelvet.java
+    public double calcSellPrice(){
+        return 5.50 + this.layers; //price is now dependent on layer count
+    }
+```
+
+*Interface.java*
+
+```java
+//Cake.java
+    interface Extras{
+        public int getEggsNeeded();
+        public boolean isProfitable();
+    }
+
+//RedVelvet.java
+public class RedVelvet extends Cake implements Cake.Extras {
+    
+        public int getEggsNeeded(){
+        return this.layers * 2;
+    }
+
+    public boolean isProfitable() {
+        if (this.sellPrice > this.cost){
+            return true;
+        }
+        return false;
+    }
+}
+```
+
 [Back to Top](#java-cheatsheet)

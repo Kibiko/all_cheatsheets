@@ -15,6 +15,7 @@
 10. [TDD with FizzBuzz](#tdd-test-driven-development)
 11. [Multiple Classes](#multiple-classes)
 12. [Inheritance](#inheritance)
+13. [Setting Up Interfaces](#setting-up-interfaces)
 
 ## ***IntelliJ Tips***
 
@@ -723,14 +724,21 @@ Code is on GitHub under bakery_lab.
 
 ![bakery](/images/bakery_lab.png)
 
+|Annotation|Meaning|Description|
+|---|---|----|
+|Blank arrow|Extends|Subclass extends to superclass|
+|Solid line|Connected|Class is used in another class?|
+|-, +, #|Private, Public, Protected|Class properties and methods accessibility outside|
+
+
 ### **Inheritance Extras**
 
-|Concept|Implementation|Description|
-|----|-----|-----|
+|Concept|Implementation|Description|Real Example|
+|----|-----|-----|-----|
 |Abstract Class|`public abstract class Cake`|Creates an abstract class that can't be called but provides the common properties for subclasses (child classes)|
-|Method Overload|`setMessages(String) , setMessages(String, String)`|Methods with the same name but different set of arguments are allowed|
-|Abstract Method|`public abstract double getSellPrice();`|Parent directory has an abstract method that is implemented and defined in all subclasses|
-|Interface|`interface Extras{public int getEggsNeeded();}`|Creates an interface that subclasses can 'implements' to rather than extend to|
+|Method Overload|`setMessages(String) , setMessages(String, int, String)`|Methods with the same name but different set of arguments are allowed, also can take in different datatypes|Login type for websites e.g. login with google, facebook, username and password... etc|
+|Abstract Method|`public abstract double getSellPrice();`|Super class has an abstract method that has to be implemented and defined in all subclasses|
+|Interface|`interface Extras{public int getEggsNeeded();}`|Creates an interface that subclasses can 'implements' to rather than extend to. This creates a loose coupling.|
 
 *AbstractClass.java*
 
@@ -754,6 +762,7 @@ public class Cheesecake extends Cake{}
         this.decorativeMessages = new ArrayList<>();
         this.decorativeMessages.add(message1);
         this.decorativeMessages.add(message2);
+    }
 ```
 
 *AbstractMethod.java*
@@ -768,29 +777,68 @@ public class Cheesecake extends Cake{}
     }
 ```
 
-*Interface.java*
+### **Setting Up Interfaces**
+
+Packages are used to organise the java files. In the Championship example we have models and interfaces to sort out the files. Interfaces are usually name `"I + [related class]"`.
+
+Firstly, we create an interfaces package and create ICycle in that package.
 
 ```java
-//Cake.java
-    interface Extras{
-        public int getEggsNeeded();
-        public boolean isProfitable();
-    }
+//ICycle.java
+package interfaces;
 
-//RedVelvet.java
-public class RedVelvet extends Cake implements Cake.Extras {
+public interface ICycle {
+
+    public String cycle(int distance);
+}
+
+//Cyclist.java
+package models;
+import interfaces.ICycle
+
+public class Cyclist implements ICycle{
     
-        public int getEggsNeeded(){
-        return this.layers * 2;
+    private String name;
+
+    public Cyclist(String name){
+        this.name = name;
     }
 
-    public boolean isProfitable() {
-        if (this.sellPrice > this.cost){
-            return true;
-        }
-        return false;
+    public String cycle(int distance){
+        return this.name + " cycled " + distance + "m";
     }
 }
 ```
+
+### **Using Interfaces as Variable Type**
+
+```java
+public class Championship {
+
+    private String name;
+    private ArrayList<ICycle> cyclists;
+    private ArrayList<IRun> runners;
+    private ArrayList<ISwim> swimmers;
+
+    public Championship(String name){
+        this.name = name;
+        this.swimmers = new ArrayList<>();
+        this.cyclists = new ArrayList<>();
+        this.runners = new ArrayList<>();
+    }
+
+    public void addSwimmer(ISwim swimmer){
+        this.swimmers.add(swimmer);
+    }
+
+    public ArrayList<ISwim> getSwimmers(){
+        return this.swimmers;
+    }
+
+}
+```
+
+This makes it possible to add swimmers and triathletes into the same arraylist as they both use the interface ISwim.
+
 
 [Back to Top](#java-cheatsheet)

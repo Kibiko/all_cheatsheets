@@ -16,6 +16,7 @@
 11. [Multiple Classes](#multiple-classes)
 12. [Inheritance](#inheritance)
 13. [Setting Up Interfaces](#setting-up-interfaces)
+14. [UML Cheatsheet](#uml-cheatsheet)
 
 ## ***IntelliJ Tips***
 
@@ -770,13 +771,15 @@ Packages are used to organise the java files. In the Championship example we hav
 
 Firstly, we create an interfaces package and create ICycle in that package.
 
+***Access modifiers are redundant for interface methods***
+
 ```java
 //ICycle.java
 package interfaces;
 
 public interface ICycle {
 
-    public String cycle(int distance);
+    String cycle(int distance);
 }
 
 //Cyclist.java
@@ -827,6 +830,12 @@ public class Championship {
 
 This makes it possible to add swimmers and triathletes into the same arraylist as they both use the interface ISwim.
 
+### **When To Use Interfaces and Super Classes**
+
+For common properties, super classes, abstract class and inheritance are more suitable.
+
+For common behaviours, interfaces are more suitable.
+
 ### **Bakery Example**
 
 Code is on GitHub under bakery_lab.
@@ -848,4 +857,72 @@ Object Type Number of Methods Available:
 - Cake
 - ISell
 
+## ***Association***
+
+There are two types of association: **comopsition** and **aggregation**
+
+![association](/images/association.png)
+
+Purely inheritance:
+
+![tightly coupled](/images/tightly-coupled-hierarchy.png)
+
+Interfaces are introduced for a more scalable code with association lines:
+
+***(all composition arrows are the wrong way round apart from Vehicle to Product and Vehicle does not extend to IProduct)***
+
+![loosely coupled](/images/composition-loose-coupled.png)
+
+|Annotation|Meaning|
+|---|---|
+|Solid line & filled diamond|Composed Of|
+|Solid line & blank arrow|Aggregation|
+
+**Example Code**
+
+baseProduct is an IProduct data type that uses the IPart interface, hence Part needs to implement IPart. However, everything else that is non unique to baseProduct is in IProduct. The implementation of IPart and IProduct on the baseProduct is exampled below.
+
+*Implements of Part to IPart:*
+
+```java
+public class Part implements IPart {
+
+    private String manufacturer;
+    private long partNumber;
+    private IProduct baseProduct;
+
+    @Override
+    public String getManufacturer() {
+        return manufacturer;
+    }
+
+    @Override
+    public long getPartNumber() {
+        return partNumber;
+    }I
+}
+```
+
+*Composition of IProduct to Part:*
+
+**CTRL + O** - to override methods from IProduct
+
+```java
+    @Override
+    public float getPrice() {
+        return this.baseProduct.getPrice();
+    }
+
+    @Override
+    public long getInventory() {
+        return this.baseProduct.getInventory();
+    }
+```
+
 [Back to Top](#java-cheatsheet)
+
+## ***Appendix***
+
+### ***UML Cheatsheet***
+
+![UML Cheatsheet](/images/UML_cheatsheet.jpg)

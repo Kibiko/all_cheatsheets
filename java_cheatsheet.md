@@ -718,19 +718,6 @@ If subclass has two inheritance chains, we encounter the "Diamond Problem". A cl
 
 The # is for protected which means property is accessible from class and also extended classes.
 
-### **Bakery Example**
-
-Code is on GitHub under bakery_lab.
-
-![bakery](/images/bakery_lab.png)
-
-|Annotation|Meaning|Description|
-|---|---|----|
-|Blank arrow|Extends|Subclass extends to superclass|
-|Solid line|Connected|Class is used in another class?|
-|-, +, #|Private, Public, Protected|Class properties and methods accessibility outside|
-
-
 ### **Inheritance Extras**
 
 |Concept|Implementation|Description|Real Example|
@@ -779,7 +766,7 @@ public class Cheesecake extends Cake{}
 
 ### **Setting Up Interfaces**
 
-Packages are used to organise the java files. In the Championship example we have models and interfaces to sort out the files. Interfaces are usually name `"I + [related class]"`.
+Packages are used to organise the java files. In the Championship example we have models and interfaces to sort out the files, however we can name the packages for model differently. Interfaces are usually name `"I + [related class]"`.
 
 Firstly, we create an interfaces package and create ICycle in that package.
 
@@ -840,5 +827,25 @@ public class Championship {
 
 This makes it possible to add swimmers and triathletes into the same arraylist as they both use the interface ISwim.
 
+### **Bakery Example**
+
+Code is on GitHub under bakery_lab.
+
+![bakery](/images/bakery_lab.png)
+
+|Annotation|Meaning|Description|
+|---|---|----|
+|Blank arrow & solid line|Extends|Subclass extends to superclass|
+|Solid line|Connected|Related classes however best to add a note on top of line e.g. Bakery --- has many --- Cake|
+|Dotted line & blank arrow|Implements|Class implements the interface|
+|-, +, #|Private, Public, Protected|Class properties and methods accessibility outside|
+
+By default, everything should be private and then changed to protected if needed. Private is there to make sure you or collaborators do not mess it up. If by default, protected, more chances to mess up in subclasses that extend to the superclass.
+
+Object Type Number of Methods Available:
+
+- RedVelvet
+- Cake
+- ISell
 
 [Back to Top](#java-cheatsheet)

@@ -17,6 +17,8 @@
 12. [Inheritance](#inheritance)
 13. [Setting Up Interfaces](#setting-up-interfaces)
 14. [UML Cheatsheet](#uml-cheatsheet)
+15. [Algorithms and Big O Notation](#algorithms-and-big-o-notation)
+16. [Stacks and Queues](#stacks-and-queues)
 
 ## ***IntelliJ Tips***
 
@@ -916,6 +918,104 @@ public class Part implements IPart {
         return this.baseProduct.getInventory();
     }
 ```
+
+## ***Algorithms and Big O Notation***
+
+***AKA Data Structure and Algorithms (DSA)*
+
+These are step by step procedues for solving a problem which are reusable. In JavaScript these are functions, in Java these are methods.
+
+### **Big O Notation**
+
+Used to compare algorithms based on:
+
+- **TIME** - how many operations are performed
+- **SPACE** - memory allocation (not the cost it used to be)
+
+The Big O notation questsions how scalable the algorithm is based on the magnitude of the input. Simple operations include multiplication, addition, division, assignments, comparisons... etc.
+
+This is used to focus on general trend of the algorithm.
+
+ ***Example 1a (Linear Time)*** 
+
+ *Add all numbers up to n:*
+
+ Option 1.
+
+ ```java
+ int sum = 0;
+
+ for (int i = 0; i < n ; i++){
+    total += i;
+ }
+ return total;
+ ```
+
+ This code has multiple assignments, increments, comparisons and addition. Inside the loop, these simple operations scale with *n*.
+ 
+ Therefore the general trend of this algorithm is expressed as,
+
+ $$ O(n) $$
+
+where this is a Linear Time, as *n* increases then the time increases at the same rate.
+
+ ***Example 1b (Constant Time)*** 
+
+ Option 2.
+
+ ```java
+ int addAllNumbersTo(int n){
+    return n*(n+1)/2;
+ }
+ ```
+
+ This algorithm has 3 simple operations. When *n* is increased the number of simple operations is constant.
+
+ This gives us an algorithm that follows Constant Time, (always same expression)
+
+ $$ O(1)$$
+
+  ***Example 2 (Quadratic Time)***
+
+  *Array of elements to check for duplicates:*
+
+  ```java
+  for (int i ; ......){
+    for (int j ; .......){
+
+    }
+  }
+  ``` 
+
+In this algorithm, each for loop scales with input *n*. Since we have a nested loop the general trend is therefore,
+
+$$O(n^2)$$
+
+ ***Example 3 (Logarithmic Time)*** 
+
+This is where the problem scales by,
+
+$$O(log_x n)$$
+
+as the magnitude of the input increases, the rate of the scale of time decreases. A great example of this kind of algorithm is the **Binary Search**. When finding your name in a phonebook, you can split the book in half and throw away the half that you don't need and repeat. This requires the phonebook to be sorted alphabetically in the first hand.
+
+### **Overview of Big O Scaling**
+
+![big_o](/images/big_o.png#center)
+
+## ***Stacks and Queues***
+
+Both of these data structures are limited, however for the right situation they can be much more efficient that ArrayLists.
+
+These examples can include a ticketing complaint system of First In First Out or **MTG** spell stack resolving of Last In First Out where both these data structures are better since they focus only on the methods that are needed compared to indexes of ArrayLists.
+
+### **Stacks**
+
+![stacks](/images/stacks.png)
+
+### **Queues**
+
+![queues](/images/queues.png)
 
 [Back to Top](#java-cheatsheet)
 

@@ -869,8 +869,6 @@ Purely inheritance:
 
 Interfaces are introduced for a more scalable code with association lines:
 
-***(all composition arrows are the wrong way round apart from Vehicle to Product and Vehicle does not extend to IProduct)***
-
 ![loosely coupled](/images/composition-loose-coupled.png)
 
 |Annotation|Meaning|

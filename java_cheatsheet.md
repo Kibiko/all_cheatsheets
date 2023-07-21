@@ -3,22 +3,27 @@
 # Table of Contents
 
 0. [Tips with IntelliJ](#intellij-tips)
-1. [Starting Off](#starting-off)
-2. [Types](#types)
-3. [Logical Operators](#logical-operators)
-4. [Control Flow](#control-flow)
-5. [Arrays and ArrayLists](#arrays)
-6. [Loops](#loops)
-7. [Useful Methods](#useful-methods)
-8. [Object Oriented Programming](#object-oriented-programming)
-9. [Testing](#testing)
-10. [TDD with FizzBuzz](#tdd-test-driven-development)
-11. [Multiple Classes](#multiple-classes)
-12. [Inheritance](#inheritance)
-13. [Setting Up Interfaces](#setting-up-interfaces)
-14. [UML Cheatsheet](#uml-cheatsheet)
-15. [Algorithms and Big O Notation](#algorithms-and-big-o-notation)
-16. [Stacks and Queues](#stacks-and-queues)
+1. Week 1 -
+    * [Starting Off](#starting-off)
+    * [Types](#types)
+    * [Logical Operators](#logical-operators)
+    * [Control Flow](#control-flow)
+    * [Arrays and ArrayLists](#arrays)
+2. Week 2 - [Loops](#loops)
+    * [Useful Methods](#useful-methods)
+    * [Object Oriented Programming](#object-oriented-programming)
+    * [Testing](#testing)
+    * [TDD with FizzBuzz](#tdd-test-driven-development)
+    * [Multiple Classes](#multiple-classes)
+3. Week 3 -
+    * [Inheritance](#inheritance)
+    * [Setting Up Interfaces](#setting-up-interfaces)
+    * [Association](#association)
+    * [Algorithms and Big O Notation](#algorithms-and-big-o-notation)
+    * [Stacks and Queues](#stacks-and-queues)
+    * [Agile Methodology](#agile-methodology)
+0. [UML Cheatsheet](#uml-cheatsheet)
+
 
 ## ***IntelliJ Tips***
 
@@ -1017,6 +1022,109 @@ These examples can include a ticketing complaint system of First In First Out or
 
 ![queues](/images/queues.png)
 
+## ***Agile Methodology***
+
+Project management methodology, not a framework. Agile has pillars and characteristics but does not give you a specific framework to work by. It is not a magic bullet as it is misused often.
+
+Developed in response to some of the problems that arise from other project management processes.
+
+### **Waterfall**
+
+Comparison to **Waterfall** -
+
+1. Gather requirements
+2. Design
+3. Build with unit and integration testing
+4. Perform system testing
+5. Perform user acceptance testing (UAT)
+6. Fix any issues
+7. Deliver the finished product
+
+Drawbacks - 
+
+- One round of gathering and documenting requirements, often difficult and the requirements can change over the time period of the design or testing
+- Doesn't allow for changing requirements or deeper understandings
+- Can lead to large losses in time
+- Making changes can be difficult once the product is built
+- Has been blamed for many a failed, expensive government projects
+
+Agile tries to solve some of these problems.
+
+### **Manifesto for Agile Software Development**
+
+- Individuals and interactions over processes and tools
+- Working software over comprehensive documentation
+- Customer collaboration over contract negotiation
+- Responding to change over following a plan
+
+1. Analyse the problem
+2. Planning
+3. Increment/Deliverable [-> Design -> Build -> Test ->]
+4. Deploy
+5. Repeat steps 1. - 4.
+
+Each iteration is a shorter period (2 - 4 weeks). In terms of Scrum, these iterations are sprints.
+
+### **Time, Cost and Scope**
+
+Every project is constrained by **Time**, **Cost** and **Scope**.
+
+These constraints are usually fixed. Agile makes Scope flexible. Within these constraints we deliver what is most valuable.
+
+### **Scrum**
+
+***2 Pizza Rule*** *- should be able to feed each of your dev teams with 2 pizzas. Roughly 8 people maximum, 4 people minimum.*
+
+Leading Agile framework where Scrum is taken from rugby, analogy used in HBP (Takeuchi & Nonaka) where everyone is in the scrum but the team members are valuable for their tasks.
+
+**Scrums are high-performing and cross-functional.** This means each scrum is able to handle their part and is not separated into front end teams and back end teams. Instead it is a mixture of developers and project leads.
+
+### **Scrum Team**
+
+Minimum of three specific roles:
+
+- ***The Product Owner*** ***(what needs to be done)***
+    * Champions for their product
+    * Focused on understanding business and market requirements
+    * Prioritising the backlog
+- ***Scrum Master*** ***(how the project is done, contact Zsolt for more info)*** 
+    * Champions for scrum within their team
+    * Coach and manage the workflow
+    * Look for improvements in practice
+- ***Dev Team***
+    * Drives the plan for each sprint and decides how much to take on
+    
+### **Scrum Framework**
+
+We have ceremonies and not meetings.
+
+- The team must meet every day : **Stand Up** (usually 5-10 minutes for 8 people)
+    * What are we doing today? Does anyone need to be caught up? What are the blockers?
+- 2 - 4 week **Sprints**
+- Dedicated team (no multi-tasking teams)
+- 5 - 9 members
+- Have a product vision from which you can extract **MVP**
+- **Team Norms** (agreements on how to work together)
+- Sprints finish with a **Retrospective**
+
+### **Tools of the Trade**
+
+- Kanban Board: Trello - trello.com
+- Extreme Programming:
+    * 5 values - Simplicity, Communication, Feedback, Courage, Respect
+    * 12 principles - Planning Game, Customer Tests, Small Releases, Simple Design, Pair Programming, TDD, Refactoring, Collective Ownership, Continuous Integration, Sustainable Pace, Metaphor, Coding Standard
+- Retrospectives:
+    * Look back and evluate how a project or iteration went
+    * Uses the traffic light or stop/start/continue points for topics
+    * Emphasize success, not just the rough points
+
+### **Other Approaches**
+
+- **Rapid Application Development (RAD)** - [-> build -> check with client ->]
+- **SAFe : Scaled Agile Framework** - scrum at large corporations (scrum of scrums, representative of each scrum team meet up to do their own scrums)
+- **Spiral** - scope is rigid
+
+
 [Back to Top](#java-cheatsheet)
 
 ## ***Appendix***
@@ -1024,3 +1132,5 @@ These examples can include a ticketing complaint system of First In First Out or
 ### ***UML Cheatsheet***
 
 ![UML Cheatsheet](/images/UML_cheatsheet.jpg)
+
+[Back to Top](#java-cheatsheet)

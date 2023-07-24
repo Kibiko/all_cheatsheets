@@ -22,7 +22,12 @@
     * [Algorithms and Big O Notation](#algorithms-and-big-o-notation)
     * [Stacks and Queues](#stacks-and-queues)
     * [Agile Methodology](#agile-methodology)
+4. Week 4 - 
+    * [ENUM](#enum)
+    * [Scanners and Exceptions](#scanners-and-exceptions)
+    * [](#)
 0. [UML Cheatsheet](#uml-cheatsheet)
+    * [](#)
 
 
 ## ***IntelliJ Tips***
@@ -1124,6 +1129,264 @@ We have ceremonies and not meetings.
 - **SAFe : Scaled Agile Framework** - scrum at large corporations (scrum of scrums, representative of each scrum team meet up to do their own scrums)
 - **Spiral** - scope is rigid
 
+## ***Enum***
+
+A collection of pre-defined values e.g. dates, a hierachy ... etc. Can be used to restrict the options that a user might have. Other examples include setting type in DnD weapon damage type e.g. slashing, blunt, piercing.
+
+### **Initialising**
+
+In order to create this, a new enum file is needed,
+
+*Weekday.java*
+```java
+public enum Weekday {
+
+    MONDAY,
+    TUESDAY,
+    WEDNESDAY,
+    THURSDAY,
+    FRIDAY,
+    SATURDAY,
+    SUNDAY;
+}
+```
+
+*Booking.java*
+```java
+public class Booking {
+
+    private String name;
+    private int weekNumber;
+    private Weekday weekday; //using the weekday enum
+
+    public Booking(String name, int weekNumber, Weekday weekday){
+        this.name = name;
+        this.weekNumber = weekNumber;
+        this.weekday = weekday;
+    }
+}
+```
+
+*Runner.java*
+```java
+public class Runner {
+
+    public static void main(String[] args) {
+
+        Booking booking = new Booking("Kevin",23,Weekday.MONDAY); //calling from enum
+
+        System.out.println(booking.getWeekday());
+    }
+}
+```
+
+To access the elements of the enum, we can use the following,
+
+```java
+        System.out.println(booking.getWeekday()); //gets from initialised booking
+
+        System.out.println(Weekday.values()[3]); //gets the value at index 3 from enums
+
+        for(Weekday weekday : Weekday.values()){ //loops through the values
+            System.out.println(weekday);
+        }
+```
+
+### **Addtional Varieties**
+
+We can add extra parts of the enum that might be translated to a different situation e.g. different language. In the below example, we include the German translations.
+
+```java
+//Weekday.java
+public enum Weekday {
+
+    MONDAY("Monntag"),
+    TUESDAY("Dienstag"),
+    WEDNESDAY("Mittwoch"),
+    THURSDAY("Donnerstag"),
+    FRIDAY("Freitag"),
+    SATURDAY("Samstag"),
+    SUNDAY("Sonntag");
+
+    private final String german;
+
+    Weekday(String german){
+        this.german = german;
+    }
+
+    public String getGermanWeekday(){
+        return this.german;
+    }
+}
+
+//Runner.java
+for(Weekday weekday : Weekday.values()){
+            System.out.println(weekday.getGermanWeekday());
+        }
+```
+
+## ***Scanners and Exceptions***
+
+Scanners allow inputs like Python `input()`.
+
+```java
+import java.util.Scanner;
+
+public class Runner {
+
+    public static void main(String[] args) {
+
+        Scanner scanner = new Scanner(System.in); // accepts value
+
+        System.out.println("Please enter your name:");
+
+        String name = scanner.nextLine(); // enter input value here
+
+        System.out.printf("Hello " + name);
+    }
+}
+```
+
+Other variable types can be found in the methods for scanner,
+
+`int number = scanner.nextInt();`
+
+`int number = scanner.nextBoolean();`  ... etc
+
+### **Exceptions**
+
+When something throws an exception, the code needs to be able to handle unexpected or invalid inputs. This is analogous to implementations such as password creation requirements or certain variable type acceptance in a field.
+
+If something might go wrong, put in exceptions. This is analagous to Python `try: , except:`
+
+*ExceptionPractice.java*
+```java
+public class ExceptionPractice {
+
+    public ExceptionPractice(){
+
+    }
+
+    public boolean checkEven(int number) throws Exception{
+        if (number %2 == 0){
+            return true;
+        }
+        throw new Exception("Number is not even.");
+    }
+}
+```
+
+*ExceptionsRunner.java*
+```java
+public class ExceptionsRunner {
+
+    public static void main(String[] args) {
+
+        ExceptionPractice exceptionPractice = new ExceptionPractice();
+
+        try {
+            exceptionPractice.checkEven(5);
+        } catch(Exception exception) {
+            System.out.printf(exception.getMessage()); //prints message from exception method
+            exception.printStackTrace(); //prints the stack trace
+        }
+    }
+}
+```
+
+### **Guessing Game Example**
+
+![guessing game](/images/guessing_game.png)
+
+*Game.java*
+```java
+import java.util.Scanner;
+
+public class Game {
+
+    public static void main(String[] args) {
+
+        Scanner scanner = new Scanner(System.in);
+
+//        IPlay game = new NumberGuesser();
+        IPlay game = new WordGuesser(); //sets the game to the WordGuesser instead!
+
+        System.out.println(game.start());
+
+        while(game.isRunning()){
+            System.out.println(game.promptForGuess());
+
+            String guess = scanner.nextLine();
+
+            try {
+                System.out.println(game.processGuess(guess));
+            } catch(Exception exception){
+                System.out.println("That's not a valid guess, try again.");
+            }
+        }
+
+        System.out.println("Well done, thanks for playing!");
+    }
+
+}
+```
+
+For WordGuesser.java, look at GitHub code.
+
+*IPlay.java*
+```java
+public interface IPlay {
+
+    boolean isRunning(); // checks if the game is running
+    String start(); // don't want scanner tied to the game logic
+    String promptForGuess();
+    String processGuess(String guess) throws Exception;
+}
+```
+
+*NumberGuesser.java*
+```java
+import java.util.Random;
+
+public class NumberGuesser implements IPlay{
+
+    private boolean running;
+    private int secretNumber;
+
+    public NumberGuesser(){
+        this.running = false;
+    }
+
+    public boolean isRunning() {
+        return this.running;
+    }
+
+    public String start() {
+        Random rand = new Random();
+        this.secretNumber = rand.nextInt(1,101); //random number between 1-100
+        this.running = true;
+        return "Welcome to the number guessing game!";
+    }
+
+    public String promptForGuess() {
+        return "Enter a number between 1 and 100: ";
+    }
+
+    public String processGuess(String guess) throws NumberFormatException {
+
+        int parsedGuess = Integer.parseInt(guess);
+
+        if (this.secretNumber == parsedGuess){
+            this.running = false;
+            return "Congratulations, you've guessed correctly!";
+        }
+        if(this.secretNumber > parsedGuess) {
+            return "Sorry, your guess was too low.";
+        }
+        return "Sorry, your guess was too high.";
+    }
+}
+```
 
 [Back to Top](#java-cheatsheet)
 

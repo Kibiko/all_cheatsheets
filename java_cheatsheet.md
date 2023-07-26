@@ -9,6 +9,7 @@
     * [Logical Operators](#logical-operators)
     * [Control Flow](#control-flow)
     * [Arrays and ArrayLists](#arrays)
+    * [Comparing Object Elements](#comparing-object-elements)
 2. Week 2 - [Loops](#loops)
     * [Useful Methods](#useful-methods)
     * [Object Oriented Programming](#object-oriented-programming)
@@ -24,7 +25,6 @@
 4. Week 4 - 
     * [ENUM](#enum)
     * [Scanners and Exceptions](#scanners-and-exceptions)
-    * [](#)
 0. [UML Cheatsheet](#uml-cheatsheet)
     * [](#)
 
@@ -232,6 +232,72 @@ Collections.sort(myArrayList, Collections.reverseOrder())  //reverse order
 Collections.max(myArrayList);
 Collections.min(myArrayList);
 ```
+
+## ***Comparing Object Elements***
+
+In order to compare elements in an object that is stored in an ArrayList, we have to define comparators.
+
+
+*Student.java*
+```java
+import java.util.Comparator;
+
+public class Student{
+
+    private int studentAge;
+    private String name;
+    private int studentScore;
+
+    public Student(int studentAge, String name, int studentScore) {
+        this.studentAge = studentAge;
+        this.name = name;
+        this.studentScore = studentScore;
+    }
+
+    //getters and setters
+
+    //comparators
+
+    //String name
+    public static Comparator<Student> StudentNameComparator = new Comparator<Student>() {
+        @Override
+        public int compare(Student o1, Student o2) {
+            String studentName1 = o1.getName();
+            String studentName2 = o2.getName();
+
+            return studentName1.compareTo(studentName2); //switch the two objects if want reversed
+        }
+    };
+    
+    //int age
+    public static Comparator<Student> StudentAgeComparator = new Comparator<Student>() {
+        @Override
+        public int compare(Student o1, Student o2) {
+            int studentAge1 = o1.getStudentAge();
+            int studentAge2 = o2.getStudentAge();
+
+            return studentAge1-studentAge2; // again switch for reverse order
+        }
+    };
+
+    //int score
+    public static Comparator<Student> StudentScoreComparator = new Comparator<Student>() {
+        @Override
+        public int compare(Student o1, Student o2) {
+            int studentScore1 = o1.getStudentScore();
+            int studentScore2 = o2.getStudentScore();
+
+            return studentScore1-studentScore2; // again switch for reverse order
+        }
+    };
+```
+To call the comparator, we add an extra argument to Collections in our Runner.java file,
+
+`Collections.sort(students, Student.StudentNameComparator);`
+
+`Collections.sort(students, Student.StudentAgeComparator);`
+
+`Collections.sort(students, Student.StudentScoreComparator);`
 
 ## ***Loops***
 

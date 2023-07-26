@@ -1,5 +1,14 @@
 # Terminal Cheatsheet
 
+# Contents
+
+1. [Terminal Commands](#terminal-commands)
+2. [GitHub Commands](#github-commands)
+3. [GitHub Collaborations](#github-collaborations)
+3. [Extra](#extra)
+
+## **Terminal Commands**
+
  ### ***Changing directory***
 
 ```
@@ -55,7 +64,7 @@ git init
 ```
 ### ***Add/Remove File to be Committed***
 ```
-git add <filename or directory>
+git add <filename or directory> // or gaa
 git rm --cached <filename>
 ```
 ### ***Commit Files***
@@ -107,6 +116,26 @@ git checkout [ID from git log]
 ```
 git checkout main
 ```
+
+## **GitHub Collaborations**
+
+Currently,
+
+1. One creates project on laptop
+2. Pushes to repository
+3. Paired programming using CodeTogether
+4. Git clone to get a copy
+
+Now...
+
+1. Create one repository
+2. Push code
+3. Add people as collaborators
+4. Collaborator Git clone
+5. Collaborator modifies and Git push
+6. Original Git pulls
+7. Original modifies and Git push
+8. Repeat pull and push
 
 ## **Extra**
 

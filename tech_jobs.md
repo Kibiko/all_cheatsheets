@@ -171,6 +171,7 @@
     - Write tests if there are none!!
     - Use the technical person by asking
 
+* Rest are ones you take back home 
 
 ## ***Agile Methodology***
 

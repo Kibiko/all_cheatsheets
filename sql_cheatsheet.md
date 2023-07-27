@@ -12,6 +12,16 @@
     * [One to Many](#one-to-many)
     * [Many to Many](#many-to-many)
     * [One to One](#one-to-one)
+    * [Ordinality and Cardinality](#ordinality-and-cardinality)
+7. [Joins](#joins)
+    * [Left Join](#left-join)
+    * [Right Join](#right-join)
+    * [Inner Join](#inner-join)
+    * [Multi-Inner Join](#multi-inner-join)
+    * [Full Outer Join](#full-outer-join)
+    * [Null Joins](#null-joins)
+    * [Joins Diagram](#key-diagram)
+    * [Aliases](#aliases)
 
 ## ***VS Code Tips***
 
@@ -72,6 +82,7 @@ If you are missing the semi-colon on the end, command does not execute (no promp
 |DROP DATABASE example|deletes the database named example|
 |`\q`|exits postgresql interface|
 |createdb [database name]|creates a database from command line|
+|dropdb [database name]|drops the entire database from command line
 |which psql|shows directory for all the database records|
 
 ## ***Entity Relationship Diagrams***
@@ -338,5 +349,181 @@ Less common but you may wish to split up a big table into two. This may be becau
 In order to implement a one to one, both tables have to have a foreign key. e.g. one table with usernames and email_id and the other table should have usernames_id and email.
 
 Implementation of these are harder since during creation of table, there would be a table referencing the other which does not exist yet. Using an ORM (Object-Relational Mapping) tool like Hibernate handles this issue.
+
+### **Cinema Entity Relationship Diagram**
+
+![cinema UML](/images/cinema_UML.png)
+
+## **Ordinality and Cardinality**
+
+There are two aspects to consider:
+
+- Ordinality: The minimum number of times an entry in one table can be associated with something in the other
+- Cardinality: The maximum number of associations for an entry
+
+Other than Information Engineering Style, we have the Chen Style and Bachman Style
+
+![cardinality](/images/cardinality.jpeg)
+
+## ***Joins***
+
+The examples below are a join between the directors on the left and movies on the right where the ***directors.id*** matches the ***movies.director_id***.
+
+### **Left Join**
+
+```sql
+SELECT * FROM directors
+LEFT JOIN movies
+ON directors.id = movies.director_id;
+```
+ id |       name       | id |       title        | duration | rating | director_id 
+|----|-----------------|----|--------------------|----------|--------|-------------
+  1 | Ridley Scott     |  4 | The Martian        |      144 | 12A    |           1
+  1 | Ridley Scott     |  1 | Alien              |      117 | 18     |           1
+  2 | Morten Tyldum    |  2 | The Imitation Game |      114 | 12A    |           2
+  3 | Jon Favreau      |  3 | Iron Man           |      126 | 12A    |           3
+  4 | Steven Spielberg |    |                    |          |        |            
+  5 | Anthony Russo    |  5 | Avengers: Endgame  |      181 | 12A    |           5
+
+  This returns all of the left table and joins the right hand table which connects to the left. In this case, we see all the directors table and the movie parts that connect to the directors. Since there are no movies with Steven Spielburg, the rest of it is null.
+
+  ### **Right Join**
+
+  ```sql
+SELECT * FROM directors
+RIGHT JOIN movies
+ON directors.id = movies.director_id;
+  ```
+
+  id |     name     | id |       title        | duration | rating | director_id 
+|----|--------------|----|--------------------|----------|--------|-------------|
+  1 | Ridley Scott  |  4 | The Martian        |      144 | 12A    |           1 |
+  1 | Ridley Scott  |  1 | Alien              |      117 | 18     |           1 |
+  2 | Morten Tyldum |  2 | The Imitation Game |      114 | 12A    |           2 |
+  3 | Jon Favreau   |  3 | Iron Man           |      126 | 12A    |           3 |
+  5 | Anthony Russo |  5 | Avengers: Endgame  |      181 | 12A    |           5 |
+|   |               |  6 | Interstellar       |      169 | 12A    |             |
+
+In this case, we right join to the movies table. This means we include the rest of the right table, including the movie Interstellar where the director has not been defined.
+
+### **Inner Join**
+
+```sql
+SELECT * FROM directors
+INNER JOIN movies
+ON directors.id = movies.director_id;
+```
+
+ id |     name      | id |       title        | duration | rating | director_id 
+|----|--------------|----|--------------------|----------|--------|-------------|
+  1 | Ridley Scott  |  4 | The Martian        |      144 | 12A    |           1 |
+  1 | Ridley Scott  |  1 | Alien              |      117 | 18     |           1 |
+  2 | Morten Tyldum |  2 | The Imitation Game |      114 | 12A    |           2 |
+  3 | Jon Favreau   |  3 | Iron Man           |      126 | 12A    |           3 |
+  5 | Anthony Russo |  5 | Avengers: Endgame  |      181 | 12A    |           5 |
+
+This joins the left and right table by their common column values. This means that director id that match with movies id is represented and values that don't match aren't presented e.g. the director Steven Spielburg that does not have any movies listed in the movies db and the movie Interstellar does not have a director that is listed in the directors db.
+
+### **Multi-Inner Join**
+
+We can join more than two tables together by adding another inner join after the first. In our example (look at UML) the actors are connected to castings which is connected to movies. Therefore we have to inner join actors to castings and then inner join castings to movies.
+
+```sql
+SELECT * FROM actors
+INNER JOIN castings
+ON actors.id = castings.actor_id
+INNER JOIN movies
+ON castings.movie_id = movies.id;
+```
+
+id |         name         | id | movie_id | actor_id | character_name | id |       title        | duration | rating | director_id 
+|----|----------------------|----|----------|----------|----------------|----|--------------------|----------|--------|-------------|
+  1 | Sigourney Weaver     |  1 |        1 |        1 | Ripley         |  1 | Alien              |      117 | 18     |           1
+  2 | Benedict Cumberbatch |  2 |        2 |        2 | Alan Turing    |  2 | The Imitation Game |      114 | 12A    |           2
+  3 | Robert Downey Jr     |  3 |        3 |        3 | Tony Stark     |  3 | Iron Man           |      126 | 12A    |           3
+  4 | Gwyneth Paltrow      |  4 |        3 |        4 | Pepper Potts   |  3 | Iron Man           |      126 | 12A    |           3
+  2 | Benedict Cumberbatch |  5 |        5 |        2 | Dr Strange     |  5 | Avengers: Endgame  |      181 | 12A    |           5
+  3 | Robert Downey Jr     |  6 |        5 |        3 | Tony Stark     |  5 | Avengers: Endgame  |      181 | 12A    |           5
+  4 | Gwyneth Paltrow      |  7 |        5 |        4 | Pepper Potts   |  5 | Avengers: Endgame  |      181 | 12A    |           5
+
+We get the actors (left), castings (middle), movies (right). ***Change `SELECT *` to get a better presentation of the fields that are important.***
+
+### **Full Outer Join**
+
+```sql
+SELECT * FROM directors
+FULL OUTER JOIN movies
+ON directors.id = movies.director_id;
+```
+
+id |       name       | id |       title        | duration | rating | director_id 
+|----|--------------|----|--------------------|----------|--------|-------------|
+  1 | Ridley Scott     |  4 | The Martian        |      144 | 12A    |           1
+  1 | Ridley Scott     |  1 | Alien              |      117 | 18     |           1
+  2 | Morten Tyldum    |  2 | The Imitation Game |      114 | 12A    |           2
+  3 | Jon Favreau      |  3 | Iron Man           |      126 | 12A    |           3
+  4 | Steven Spielberg |    |                    |          |        |            
+  5 | Anthony Russo    |  5 | Avengers: Endgame  |      181 | 12A    |           5
+ |  |                  |  6 | Interstellar       |      169 | 12A    |            
+
+ A full outer join, takes every value from both tables, connects them by the common collumn values and presents the entirety of both tables.
+
+ ## ***Null Joins***
+
+ These are used to find parts of the left table that does not connect to the right.
+
+ ```sql
+SELECT * FROM directors
+LEFT JOIN movies
+ON directors.id = movies.director_id
+WHERE movies.director_id is NULL;
+ ```
+
+  id |       name       | id | title | duration | rating | director_id 
+|----|--------------|----|--------------------|----------|--------|-------------|
+  4 | Steven Spielberg |    |       |          |        |            
+
+This example is used to find parts of the right table that does not connect to the right.
+
+```sql
+SELECT * FROM directors
+RIGHT JOIN movies
+ON directors.id = movies.director_id
+WHERE director_id is NULL;
+```
+
+ id | name | id |    title     | duration | rating | director_id 
+|----|--------------|----|--------------------|----------|--------|-------------|
+ |   |      |  6 | Interstellar |      169 | 12A    |       
+
+### **Key Diagram**
+
+![sql joins](/images/joins_sql.png)
+
+### **Aliases**
+
+We can cast the first full menton of the tables as an alias that can be used for referencing.
+
+```sql
+SELECT a.name, c.character_name, m.title 
+FROM actors AS a
+INNER JOIN castings AS c
+ON a.id = c.actor_id
+INNER JOIN movies AS m
+ON c.movie_id = m.id;
+```
+
+ |       name         | character_name |       title        |
+|----------------------|----------------|--------------------|
+ Sigourney Weaver     | Ripley         | Alien
+ Benedict Cumberbatch | Alan Turing    | The Imitation Game
+ Robert Downey Jr     | Tony Stark     | Iron Man
+ Gwyneth Paltrow      | Pepper Potts   | Iron Man
+ Benedict Cumberbatch | Dr Strange     | Avengers: Endgame
+ Robert Downey Jr     | Tony Stark     | Avengers: Endgame
+ Gwyneth Paltrow      | Pepper Potts   | Avengers: Endgame
+
+
+
 
 [Back to Top](#sql-cheatsheet)

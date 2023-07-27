@@ -20,6 +20,7 @@ cd [Destination]
 | Specific directory e.g documents| `~/Documents` |
 | Parent directory| `..`|
 | Current directory| `.` |
+| Previous directory| `-` |
 
 ### ***File Modification***
 

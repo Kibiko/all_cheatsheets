@@ -2,10 +2,23 @@
 
 # Table of Contents
 
+0. [VS Code Tips](#vs-code-tips)
 1. [Background](#background)
 2. [Starting Up](#starting-up)
-3. [Entity Relationship Diagrams](#entity-relationship-diagrams)
-4. [Operations](#operations)
+    * [Entity Relationship Diagrams](#entity-relationship-diagrams)
+    * [Operations](#operations)
+5. [Football Quiz](#football-quiz)
+6. [SQL Relationships](#sql-relationships) 
+    * [One to Many](#one-to-many)
+    * [Many to Many](#many-to-many)
+    * [One to One](#one-to-one)
+
+## ***VS Code Tips***
+
+|Command|Description|
+|----|-----|
+|`option` + `shift` + `down`|copies the current line down (same as `cmd + d` in IntelliJ)|
+|`option` + [click multiple lines] |can edit multiple lines at the same time
 
 ## ***Background***
 
@@ -165,5 +178,165 @@ DELETE FROM movies WHERE id = 5;
 ### **Order of Operations**
 
 ![Operations Order](/images/operations_order.png)
+
+## ***Football Quiz***
+
+Each of the questions/tasks below can be answered using a `SELECT` query. When you find a solution copy it into the code block under the question before pushing your solution to GitHub.
+
+1) Find all the matches from 2017.
+
+```sql
+SELECT * FROM matches WHERE season = 2017;
+```
+
+2) Find all the matches featuring Barcelona.
+
+```sql
+SELECT * FROM matches WHERE hometeam = 'Barcelona' OR awayteam = 'Barcelona';
+```
+
+3) What are the names of the Scottish divisions included?
+
+```sql
+SELECT name FROM divisions WHERE country = 'Scotland';
+```
+
+4) Find the value of the `code` for the `Bundesliga` division. Use that code to find out how many matches Freiburg have played in that division. HINT: You will need to query both tables
+
+```sql
+-- Two line solution
+SELECT code FROM divisions WHERE name = 'Bundesliga';
+SELECT COUNT(*) FROM matches WHERE division_code = ('D1') AND (hometeam = 'Freiburg' OR awayteam = 'Freiburg');
+
+-- One line solution
+SELECT COUNT(*) FROM matches WHERE division_code = (SELECT code FROM divisions WHERE name = 'Bundesliga') AND (hometeam = 'Freiburg' OR awayteam = 'Freiburg');
+```
+
+5) Find the teams which include the word "City" in their name. 
+
+```sql
+SELECT DISTINCT hometeam FROM matches WHERE LOWER(hometeam) LIKE LOWER('%City%');
+```
+
+6) How many different teams have played in matches recorded in a French division?
+
+```sql
+-- Two line solution
+SELECT code FROM divisions WHERE country = 'France';
+SELECT COUNT(DISTINCT hometeam) FROM matches WHERE division_code = ('F1') OR division_code = ('F2');
+
+-- One line solution
+SELECT COUNT(DISTINCT hometeam) FROM matches WHERE division_code in (SELECT code FROM divisions WHERE country = 'France');
+```
+
+7) Have Huddersfield played Swansea in any of the recorded matches?
+
+```sql
+SELECT COUNT(*) FROM matches WHERE (hometeam = 'Huddersfield' AND awayteam = 'Swansea') OR (hometeam = 'Swansea' AND awayteam = 'Huddersfield');
+```
+
+8) How many draws were there in the `Eredivisie` between 2010 and 2015?
+
+```sql
+SELECT COUNT(*) FROM matches WHERE division_code = (SELECT code FROM divisions WHERE name = 'Eredivisie') AND ftr = 'D' AND season BETWEEN 2010 AND 2015;
+```
+
+9) Select the matches played in the Premier League in order of total goals scored from highest to lowest. When two matches have the same total the match with more home goals should come first.
+
+```sql
+SELECT * FROM matches WHERE division_code = (SELECT code FROM divisions WHERE name = 'Premier League') ORDER BY (fthg + ftag) DESC, fthg DESC;
+```
+
+10) In which division and which season were the most goals scored?
+
+```sql
+SELECT division_code, divisions.name, season, SUM(fthg+ftag) FROM matches INNER JOIN divisions ON divisions.code = matches.division_code GROUP BY season, division_code, divisions.name ORDER BY SUM DESC LIMIT 1;
+```
+
+### Useful Resources
+
+- [Filtering results](https://www.w3schools.com/sql/sql_where.asp)
+- [Ordering results](https://www.w3schools.com/sql/sql_orderby.asp)
+- [Grouping results](https://www.w3schools.com/sql/sql_groupby.asp)
+
+## ***SQL Relationships***
+
+Single Tables -
+* Usually don't want database to consist of one massive table as fields grow
+* How do we handle collections? SQL does not do array/arraylists
+
+Multiple Tables -
+* How do we maintain/handle relationships between them?
+* SQL allows us to do this using **primary keys** and **foreign keys**
+* We can even add extra tables to keep track of more complex relationships
+
+Primary vs. Foreign Key - 
+* The foreign key of a table (extra column) represents the primary key of another table
+* e.g. adding a *director_id* column to the movies table which represents the directors table *id* column
+
+### **One to Many**
+
+![One to Many](/images/sql_one_to_many.png)
+
+*movies_and_directors.sql*
+```sql
+DROP TABLE IF EXISTS movies;
+DROP TABLE IF EXISTS directors; -- in this case, we have to drop the tables in the reverse order
+
+CREATE TABLE directors( -- order matters, since directors is primary this table should come first
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255)
+);
+
+CREATE TABLE movies ( -- since movies references directors, this table comes second
+    id SERIAL PRIMARY KEY, 
+    title VARCHAR(255),
+    duration INT,
+    rating VARCHAR(255),
+    director_id INT REFERENCES directors(id) -- foreign key which links to directors primary
+);
+
+INSERT INTO directors(name) VALUES ('Ridley Scott');
+INSERT INTO directors(name) VALUES ('Morten Tyldum');
+INSERT INTO directors(name) VALUES ('Jon Favreau');
+INSERT INTO directors(name) VALUES ('Steven Spielberg');
+
+
+INSERT INTO movies (title, duration, rating, director_id) VALUES ('Alien', 117, '18', 1);
+INSERT INTO movies (title, duration, rating, director_id) VALUES ('The Imitation Game', 114, '12A', 2);
+INSERT INTO movies (title, duration, rating, director_id) VALUES ('Iron Man', 126, '12A', 3);
+INSERT INTO movies (title, duration, rating, director_id) VALUES ('The Martian', 144, '12A', 1);
+```
+### **Many to Many**
+
+![Many to Many](/images/many_to_many.png)
+
+*movies_and_directors.sql (continued)*
+```sql
+DROP TABLE IF EXISTS castings;
+DROP TABLE IF EXISTS actors;
+
+CREATE TABLE actors (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255)
+);
+
+CREATE TABLE castings ( -- join table that has two foreign keys to maintain many to many
+    id SERIAL PRIMARY KEY, -- films have many actors and actors have many films
+    movie_id INT REFERENCES movies(id),
+    actor_id INT REFERENCES actors(id),
+    character_name VARCHAR(255)
+);
+
+-- INSERTS FOR BOTH
+```
+
+### **One to One**
+
+Less common but you may wish to split up a big table into two. This may be because there is a lot of null errors in some parts of the data that you want to separate.
+
+In order to implement a one to one, both tables have to have a foreign key. e.g. one table with usernames and email_id and the other table should have usernames_id and email.
+
+Implementation of these are harder since during creation of table, there would be a table referencing the other which does not exist yet. Using an ORM (Object-Relational Mapping) tool like Hibernate handles this issue.
 
 [Back to Top](#sql-cheatsheet)

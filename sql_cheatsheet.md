@@ -22,6 +22,7 @@
     * [Null Joins](#null-joins)
     * [Joins Diagram](#key-diagram)
     * [Aliases](#aliases)
+8. [Safari Lab](#safari-lab)
 
 ## ***VS Code Tips***
 
@@ -76,11 +77,15 @@ kevin=# CREATE DATABASE example;
 ```
 If you are missing the semi-colon on the end, command does not execute (no prompt) and `kevin=#` changes to `kevin-#`, this indicates it is reading the next line, therefore finish off with semi-colon on next line.
 
-|Command|Description|
+|PSQL UI|Description|
 |----|-----|
 |`\l`|lists all databases|
 |DROP DATABASE example|deletes the database named example|
 |`\q`|exits postgresql interface|
+|`\c` [database name]|connects to the database|
+
+|Command Line|Description|
+|--|--|
 |createdb [database name]|creates a database from command line|
 |dropdb [database name]|drops the entire database from command line
 |which psql|shows directory for all the database records|
@@ -365,6 +370,8 @@ Other than Information Engineering Style, we have the Chen Style and Bachman Sty
 
 ![cardinality](/images/cardinality.jpeg)
 
+The extra lines before the crow's feet is if you are certain. Without the extra line or circle before the crows feet, it adds in a bit of ambiguity. An example is ***shipments*** and ***items***. In real like we expect shipments to have at least one item therefore we would expect the one or more crows feet on the items end. However in some cases we want to leave some ambiguity for the lower bound of items in shipments. Even though empty shipments are unheard of it could be possible that shipments are temporarily empty then items are added.
+
 ## ***Joins***
 
 The examples below are a join between the directors on the left and movies on the right where the ***directors.id*** matches the ***movies.director_id***.
@@ -522,6 +529,10 @@ ON c.movie_id = m.id;
  Benedict Cumberbatch | Dr Strange     | Avengers: Endgame
  Robert Downey Jr     | Tony Stark     | Avengers: Endgame
  Gwyneth Paltrow      | Pepper Potts   | Avengers: Endgame
+
+## ***Safari Lab***
+
+![zoo erd](/images/safari_lab.png)
 
 
 

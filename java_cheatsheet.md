@@ -2,30 +2,32 @@
 
 # Table of Contents
 
-0. [Tips with IntelliJ](#intellij-tips)
-1. Week 1 -
+* [Tips with IntelliJ](#intellij-tips)
+* Week 1 -
     * [Starting Off](#starting-off)
     * [Types](#types)
     * [Logical Operators](#logical-operators)
     * [Control Flow](#control-flow)
     * [Arrays and ArrayLists](#arrays)
     * [Comparing Object Elements](#comparing-object-elements)
-2. Week 2 - [Loops](#loops)
+* Week 2 - 
+    * [Loops](#loops)
     * [Useful Methods](#useful-methods)
     * [Object Oriented Programming](#object-oriented-programming)
     * [Testing](#testing)
     * [TDD with FizzBuzz](#tdd-test-driven-development)
     * [Multiple Classes](#multiple-classes)
-3. Week 3 -
+* Week 3 -
     * [Inheritance](#inheritance)
     * [Setting Up Interfaces](#setting-up-interfaces)
     * [Association](#association)
     * [Algorithms and Big O Notation](#algorithms-and-big-o-notation)
     * [Stacks and Queues](#stacks-and-queues)
-4. Week 4 - 
+* Week 4 - 
     * [ENUM](#enum)
     * [Scanners and Exceptions](#scanners-and-exceptions)
-0. [UML Cheatsheet](#uml-cheatsheet)
+* Appendix -
+    * [UML Cheatsheet](#uml-cheatsheet)
     * [](#)
 
 

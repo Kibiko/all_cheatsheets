@@ -26,7 +26,11 @@
 * Week 4 - 
     * [ENUM](#enum)
     * [Scanners and Exceptions](#scanners-and-exceptions)
+        - [Guessing Game](#guessing-game-example)
+    * [Flights Lab](#flights-lab)
+    * [Debugging Tools](#debugging-tools)
 * Appendix -
+    * [SOLID Principles](#solid-principles)
     * [UML Cheatsheet](#uml-cheatsheet)
     * [](#)
 
@@ -1353,9 +1357,49 @@ public class NumberGuesser implements IPlay{
 }
 ```
 
+### **Flights Lab**
+
+![flights_lab](/images/flights_UML.png)
+
+(see GitHub, https://github.com/Kibiko/flights_pair)
+
+## ***Debugging Tools***
+
+### **Break Points**
+
+- Introduces break points in a certain line of code by clicking the line number on the left
+- This stops the code before the line where the break point is introduced when you run in debug mode
+- The outputs show the current assignments are and the properties of the classes run
+
+### **Debugging Icons**
+
+- **Step Over** - this button allows you to continue to the next line from the break point to allow you to assess what you expect and the result so far from the current line
+
+
 [Back to Top](#java-cheatsheet)
 
 ## ***Appendix***
+
+### ***SOLID Principles***
+
+***Single Responsibility Principle*** - One class should have one single responsibility
+* Benefits include -
+    - **Testing** - Fewer tests are needed to be able to make the class more robust
+    - **Lower coupling** - There is only one dependency on the class therefore easier to change and operations of the class do not depend on any other
+    - **Organisation** - Easier to navigate through multiple classes with one responsibility than a large class that has many
+
+***Open for Extension, Closed for Modification***
+
+***Liskov Subsitution Princle***
+
+***Interface Segregation*** - A class should not be forced to implement interfaces it does not use through splitting larger interfaces into many
+
+* Benefits include -
+    - Classes do not have methods it will not use if implementing a larger interface
+    - 
+
+
+***Dependency Inversion***
 
 ### ***UML Cheatsheet***
 

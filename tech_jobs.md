@@ -10,6 +10,7 @@
 6. [Testers](#testers)
 7. [Tech Adjacent Jobs](#tech-adjacent-jobs)
 8. [Technical Interview](#technical-interview)
+9. [Lloyds Banking Group Seminar](#lloyds-banking-group-seminar)
 99. [Agile Methodology](#agile-methodology)
 
 ## ***Software Engineering***
@@ -172,6 +173,61 @@
     - Use the technical person by asking
 
 * Rest are ones you take back home 
+
+## ***Lloyds Banking Group Seminar***
+
+Debbie Marshall (17 years at LBG in Edinburgh) - 
+
+- Mature student (21) with no A-levels, uni with computing and business modules
+- Grew up on a farm
+- Capability Lead for Everyday Banking Platform
+    * attract, diversity and retain software engineers
+    * provide outreach opportunities
+    * talent engineering pipeline
+- 26 million customers
+- 58,000 employees
+- Annual revenue £10 billion
+
+What Debbie values -
+
+- mindfulness
+- curiosity (doesn't have to be loud and outspoken)
+- willingness to learn and go in a direction
+- honesty
+- reinforcing value that she has seen by sending notes
+
+Expectations of new intakes -
+
+- whether they have some self sufficiency in terms of learning
+- motivation to learn outside projects
+- interest to help yourself through with guidance
+- specific engineering paths to guide people through
+- attitude and knowing what you want to do
+
+Values - Boldness, People First, Inclusivity, Sustainable, Trust 
+
+- Sustainability was introduced last year and the way to achieve it 
+    * green coding?
+    * hackathon with VISA that is sustainability themed
+    * paperless, biking, recycling, lights
+
+Everyday Banking Platform -
+
+- savings, credits... etc
+- strategy is to work effectively together and multiskilled teams
+- enhance customer experience
+
+Projects -
+
+- technology 
+- agile methodology
+- ways to tackle fraud with more complex techniques
+- investment mobile app
+- AR mortgage journey
+
+- innovation and learning hub (devised by first BNTA group), where business and engineers are working together on courses, budgeting mobile app, work with seniors just to experiment, sit down and do collaborative coding
+- Edinburgh LBG is one of the first labs to build application updates to the cloud
+- get a mentor or a sponsor
 
 ## ***Agile Methodology***
 

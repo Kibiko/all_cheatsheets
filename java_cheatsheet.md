@@ -29,6 +29,15 @@
         - [Guessing Game](#guessing-game-example)
     * [Flights Lab](#flights-lab)
     * [Debugging Tools](#debugging-tools)
+* Week 5 -
+    * [API](#apis)
+        - [RESTful Convention](#restful-routing)
+        - [Status Codes](#status-codes)
+    * [Spring](#spring)
+        - [Hello World Example](#hello-world-code)
+    * [POJO, DTO, JSON](#pojos-dtos--json)
+    * [Word Guesser Game](#word-guesser-game-using-spring-boot)
+        - [Postman](#postman)
 * Appendix -
     * [SOLID Principles](#solid-principles)
     * [UML Cheatsheet](#uml-cheatsheet)
@@ -1375,6 +1384,216 @@ public class NumberGuesser implements IPlay{
 
 - **Step Over** - this button allows you to continue to the next line from the break point to allow you to assess what you expect and the result so far from the current line
 
+
+## APIs
+
+API stands for,
+
+- **A**pplication
+
+- **P**rogramming
+
+- **I**nterface
+
+This is not a user interface! An API requires you to program on the interface to interact with the application underneath, no fancy buttons. To set up a Java server, you can hand code it or use an API. Third party APIs include Google Maps where it is used by many other companies.
+
+Types of APIs -
+
+- JAVA API
+- Android API - can write Java code but translates down to Android
+- JAVA OpenGL - graphics
+- Jakarta Persistence API (JPA) - Java to SQL  
+
+### Data API
+
+JSON -
+
+* ***Java Script Object Notation***
+* data type
+* sets up the data much easier to read than xml
+* essentially a lot of key and value pairs
+
+RESTful API -
+
+- ***Representational State Transfer***
+- data you are sending over is just the representational state
+- the source of the data is represented rather than given out since many people are accessing it, otherwise it would only be allowed to one person at a time
+- these are stateless, meaning there is no keeping tracking of the request and response cycle as it would get horrendously large
+- no functionality, no methods, no full history
+
+### Configuring an API
+
+
+![api](/images/api.png)
+
+### Setup
+
+![api](/images/api_setup.png)
+
+The ***endpoints*** are the representations received by the client and the ***resource*** is the data in the database.
+
+### RESTful Routing
+
+By using the RESTful convention such as http://bbc.co.uk/sport/football/234, when this is sent to the API the API knows where to navigate to on an application.
+
+The 7 RESTful routes are -
+
+![get](/images/get_convention.png)
+
+When a request is made it follows the RESTful convention - 
+
+- Common requests -
+    * **GET, POST, PUT, PATCH, DELETE, OPTION, HEAD**
+
+- **GET** - 
+    * needs to represent the data 
+    * e.g. http://bbc.co.uk/sport/football/234 should represent sports articles specifically football and id 234 ideally
+    * when you get back multiple resources, then thats an **INDEX** action
+    * e.g. http://bbc.co.uk/sports/football should give a list of football related articles
+    * safe method
+
+- **POST** - 
+    * used to create something
+    * generally not safe
+
+- **PUT/PATCH**-
+    * PUT is used for updating and changing an existing entity e.g. count of stock, value of stock
+    * PATCH is used to "marking" or swapping values e.g. marking a task is done with checkmark or wordguesser replacing correctly guessed character
+
+### Status Codes
+|Code|Description|
+|----|---|
+|`1xx` | informational (metadata, healthcheck)|
+|`2xx` | successful handling  (just confirmation of requests)|
+|`3xx`| redirection of website|
+|`4xx`| client side error (mess up URL, unauthorised, forbidden access)|
+|`5xx`| server side error|
+
+Common examples - 
+
+`200` -> `HttpStatus.OK`
+
+## ***Spring***
+
+### What is Spring?
+
+- An application framework for Java
+- Allows for faster and more productive web development in Java
+- Complex and hard to understand
+- Setup can be rather lengthy
+- Think of Spring as an Umbrella framework with different libraries
+
+### Spring Boot
+
+- To reduce some of the complexity, Spring Boot was introduced
+- Whenever people say 'Spring' they often mean Spring Boot
+- Contains boilerplater configurations
+
+### What does it do?
+
+- Connect our java application and our databases
+- Create controllers to define our routes
+- Write methods that read/write to our database in order to create CRUD functionality
+
+### Creating our first Spring Boot App
+
+1. start.spring.io (in browser, this is included in intellij enterprise but not community)
+    * Maven, Java, Spring Boot 3.1.2, packaging Jar, Java 17
+    * Dependencies: Spring Web, Spring Boot DevTools (database would be another dependency)
+2. Generate project and open in IntelliJ
+3. Run and look for message `"Tomcat started on port(s): 8080 (http) with context path ''"`
+
+### Hello World Code
+
+*HelloWorldApplication.java*
+```java
+package com.bnta.hello_world;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class HelloWorldApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(HelloWorldApplication.class, args);
+	}
+}
+```
+
+*GreetingController.java*
+```java
+package com.bnta.hello_world.controllers;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class GreetingController {
+
+    @GetMapping("/greeting") //sets what route triggers this method
+    public String greeting(){
+        return "Hello world";
+    }
+}
+```
+
+In the controller package, we defined the *GreetingController* (allows http requests) which is a `RestController` that uses the `GetMapping` tag to set what route would trigger the method to return the String `"hello world".`
+
+Now when we go into a browser and open `localhost:8080/greeting`, we **GET** the greeting back. The browser is sending GET requests to the server we have made.
+
+|Syntax|Browser|Description|
+|---|---|---|
+|`@RequestParam(defaultValue = "world") String name`|http://localhost:8080/greeting?name=kevin|Can request a String name in the greeting to customise it or have default value|
+|`pkill java`|N/A|Closes server that you leave open by accident|
+
+## ***POJOs, DTOs & JSON***
+
+- Thus far, our API returns a String, which can extend to other simple types like boolean, int, etc
+- If the information is complex (which in most cases are when one API is consumed by another machine), we will need other types
+- We want to send objects instead
+
+### JSON (JavaScript Object Notation)
+
+- We present our data in JSON, organised into **key-value pairs** (dictionaries)
+- In JSON, **key must be a string**, value can be whatever
+```json
+{
+    "name" : "Zsolt", //key and value
+    "employeeNum" : 2056,
+    "team" : "BNTA"
+}
+```
+- When we create a Spring app, we are able to translate our Java objects into JSON through **serialisation** and **deserialisation**
+
+### POJO (Plain Old Java Object)
+
+- In Spring apps, we need classes to create objects representing data we want to input/store/pass between different parts of the app
+- We need to create objects that 'models' the table in our database
+- e.g. cat object with name, age, breed that models the table in our database which stores those properties
+- Classes like this are usually called 'models'
+- POJOs must:
+    * have private properties
+    * public getters and setters (if missing the property won't be serialised over)
+    * empty/default constructor
+    * **not** have any additional custom methods (usually)
+
+### DTO (Data Transfer Objects)
+
+- A POJO without any business logic with flat structure
+- Carries data between processes or networks
+- Encapsulation of the serialisation's logic, it lets the program store and transfer data in a specific format
+- Its a way of moving data around whereas POJO is there to exist
+
+## ***Word Guesser Game (using Spring Boot)***
+
+https://github.com/Kibiko/word_guesser_spring
+
+### Postman
+
+- This application is used to test our server by checking the RESTful routes
+- We can use the GET, POST and PATCH request to test the Word Guesser Game
+- When sending a PATCH request, since the Guess is a @RequestBody, we need to give in a body that is JSON type in the Body to enter a letter
 
 [Back to Top](#java-cheatsheet)
 

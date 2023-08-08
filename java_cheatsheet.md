@@ -38,6 +38,11 @@
     * [POJO, DTO, JSON](#pojos-dtos--json)
     * [Word Guesser Game](#word-guesser-game-using-spring-boot)
         - [Postman](#postman)
+* Week 6 -
+    * [Service Layer](#service-layer)
+    * [Dependency Injection](#dependency-injection)
+        -  [Spring Implementation](#springs-dependency-injection)
+    * [Persisting Data](#persisting-data)
 * Appendix -
     * [SOLID Principles](#solid-principles)
     * [UML Cheatsheet](#uml-cheatsheet)
@@ -350,6 +355,7 @@ for (int i = 0 ; i<colours.size(); i++ ){
 |---|---|---|
 |Find value of character| `String.charAt([index])`| finds the character at index of string e.g. beginning character|
 |Upper and lowercase| `~ .toUpperCase() / .toLowerCase()`|
+|Repeating letters|`Strings.repeat("[letter or word]", int count)`|
 
 ## ***Object Oriented Programming***
 
@@ -1594,6 +1600,251 @@ https://github.com/Kibiko/word_guesser_spring
 - This application is used to test our server by checking the RESTful routes
 - We can use the GET, POST and PATCH request to test the Word Guesser Game
 - When sending a PATCH request, since the Guess is a @RequestBody, we need to give in a body that is JSON type in the Body to enter a letter
+
+## Service Layer
+
+Issues with Word Guesser Game -
+
+* Only works if the word is "hello"
+* No win condition currently
+* Setup is not very SOLID
+* Does not follow Open-Closed Principle *(open for extension, closed for modification)*
+    - Developer should be able to add functionality without having to change much
+* Single Responsibility Principle *(a module should be responsible for one thing)*
+
+To Solve - 
+
+* Abstract different parts of the app
+* Avoid bloated controller/class
+
+Finished code:
+
+https://github.com/Kibiko/word_guesser_abstracted
+
+Layout -
+
+![server layers](/images/server_layers.png)
+
+Controller layer -
+
+* Sits at the **top level** of the backend/server
+* Acts as gatekeeper
+* Dictates how the frontend interacts with the api
+* Define what routes are available
+* Create response obects and set status codes
+* Should **not contain** loads of logic
+* Controller requests the view to send to the frontend
+* **Model View Controller (search up)**
+
+Service layer -
+
+* **Heavy lifting** in the app
+* Most of **business logic** lives here (does it contain letter, stars, word logic, guess logic)
+* Could be responsible for making requests itself
+* Link between the controller and any data storage required
+
+Data storage layer -
+
+* Used to manage and retrive data
+* Allows us to store our data in different ways which is **VERY IMPORTANT** for scale-ability
+
+Database & Models - 
+
+* Part of the backend/server, but **NOT part of the Spring application**
+* Where data is stored permanently
+* Models are needed at almost every step
+* Used to define the data moving around our application
+* Annotating our models will generate a database scheme for data access layer to use
+
+### How will all these layers speak to each other?
+
+- If our game logic is in another layer, how can GameController access it?
+- You don't want the controller to be responsible for instantiating a required service
+- e.g. dont want new objects with methods to call in controller
+
+## Dependency Injection 
+
+* a process where we conveniently get objects just where we need them
+* a programming technique that makes a class independent of its dependencies
+* you could replace dependencies without changing the class that uses them
+* Spring handles this important function for us through annotations
+
+* Many annotations extends @Bean
+* Ready to instantiate this object whenever needed and inject it
+
+### Springs Dependency Injection
+
+```java
+GameService gameService = new GameService();
+Reply reply = gameService.startNewGame();
+```
+
+**This is too tightly coupled!** Instead, we want Spring to instantiate it for us.
+
+```java
+// GameService.java
+@Service
+public class GameService {
+
+    //properties
+
+    //default constructor (empty)
+
+    public Reply startNewGame(){
+        this.game = new Game("hello");
+        this.currentWord = "*****";
+        this.guessedLetters = new ArrayList<>();
+        Reply reply = new Reply(false,
+                currentWord,
+                "New game started");
+        return reply;
+    }
+}
+
+// Game.java
+    @Autowired
+    GameService gameService;
+
+    @PostMapping
+    public ResponseEntity<Reply> startNewGame() {
+        Reply reply = gameService.startNewGame();
+        return new ResponseEntity<>(reply, HttpStatus.CREATED);
+    }
+```
+
+This makes it less tightly coupled and easier to change if we want to modify the autowired properties.
+
+### Data Layer
+
+- Want multiple instances of games. to save games and get a game by its ID
+
+
+```java
+// Game.java
+public class Game {
+
+    private static int nextId = 1;
+
+    private int id;
+    private String word;
+    private int guesses;
+    private boolean complete;
+
+    public Game(String word) {
+        this.id = this.nextId;
+        this.nextId ++;
+        this.word = word;
+        this.guesses = 0;
+        this.complete = false;
+    }
+}
+
+// GameList.java
+@Repository
+public class GameList {
+//  keep track of games
+//  be able to add a new game to track
+//  get a game by ID
+
+    private List<Game> games;
+
+    public GameList(){
+        this.games = new ArrayList<>();
+    }
+
+    public void addGame(Game game){
+        this.games.add(game);
+    }
+
+    public Game getGameById(int id){
+        return this.games.get(id - 1);
+    }
+}
+
+// GameService.java
+    @Autowired
+    GameList gameList;
+```
+
+## Persisting Data
+
+Required Spring Boot Dependencies:
+
+- Spring boot web
+- Developer tools
+- Data JPA 
+    * Jakarta Persistence API (Object Relational Mapper)
+    * Translates our code into a row on a database
+    * Requires annotations and JPA repositories
+- Postgresql data
+
+![database locator](/images/database_locator.png)
+
+```properties
+spring.datasource.url=jdbc:postgresql://localhost:5432/word_guesser
+spring.datasource.username=
+spring.datasource.password=
+spring.datasource.driver-class-name=org.postgresql.Driver
+spring.jpa.hibernate.ddl-auto=create-drop
+```
+
+This directs the code to the certain database named `word_guesser` using the postgresql driver.
+
+The last line of `create-drop` is there to drop the database every time since we are changing the code a lot. Otherwise alternatives can be put instead.
+
+Makes a class with objects which are going into the database:
+
+```java
+@Entity(name = "games")
+public class Game {
+   // usual code
+}
+```
+
+with it's properties,
+
+```java
+    @Id //automatically makes column id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) //generates an ID using certain strategy
+    private Long id;
+
+    @Column(name = "word") //by default, it would take the property's name as column name
+    private String word;
+    
+    @Column
+    private int guesses;
+    
+    @Column
+    private boolean complete;
+```
+
+We then require a Repository,
+
+```java
+// GameRepository.java
+// we want the id attached
+public interface GameRepository extends JpaRepository<Game, Long> {
+
+}
+```
+
+This can then be implemented into servive layer by `@Autowired
+GameRepository gameRepository;` and find the games through `gameRepository.findById(id).get();`.
+
+Other useful methods through JpaRepository,
+
+`gameRepository.save(game);` - needs to be implemented at every stage of the game
+
+
+**This is all it needs!**
+
+## Implementing Relationships
+
+In this example, we are considering a game with a player. The player can have many games, giving a one to many relationship.
+
+### One to Many
+
+
 
 [Back to Top](#java-cheatsheet)
 

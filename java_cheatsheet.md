@@ -3,49 +3,52 @@
 # Table of Contents
 
 * [Tips with IntelliJ](#intellij-tips)
-* Week 1 -
-    * [Starting Off](#starting-off)
-    * [Types](#types)
-    * [Logical Operators](#logical-operators)
-    * [Control Flow](#control-flow)
-    * [Arrays and ArrayLists](#arrays)
-    * [Comparing Object Elements](#comparing-object-elements)
-* Week 2 - 
-    * [Loops](#loops)
-    * [Useful Methods](#useful-methods)
-    * [Object Oriented Programming](#object-oriented-programming)
-    * [Testing](#testing)
-    * [TDD with FizzBuzz](#tdd-test-driven-development)
-    * [Multiple Classes](#multiple-classes)
-* Week 3 -
-    * [Inheritance](#inheritance)
-    * [Setting Up Interfaces](#setting-up-interfaces)
-    * [Association](#association)
-    * [Algorithms and Big O Notation](#algorithms-and-big-o-notation)
-    * [Stacks and Queues](#stacks-and-queues)
-* Week 4 - 
-    * [ENUM](#enum)
-    * [Scanners and Exceptions](#scanners-and-exceptions)
-        - [Guessing Game](#guessing-game-example)
-    * [Flights Lab](#flights-lab)
-    * [Debugging Tools](#debugging-tools)
-* Week 5 -
-    * [API](#apis)
-        - [RESTful Convention](#restful-routing)
-        - [Status Codes](#status-codes)
-    * [Spring](#spring)
-        - [Hello World Example](#hello-world-code)
-    * [POJO, DTO, JSON](#pojos-dtos--json)
-    * [Word Guesser Game](#word-guesser-game-using-spring-boot)
-        - [Postman](#postman)
-* Week 6 -
-    * [Service Layer](#service-layer)
-    * [Dependency Injection](#dependency-injection)
-        -  [Spring Implementation](#springs-dependency-injection)
-    * [Persisting Data](#persisting-data)
-    * [Implementing Relationships](#implementing-relationships)
-    * [Dervied Queries](#derived-query-methods-in-spring)
-    * [Chocolates Lab](#chocolates-lab)
+- [BackEnd Coding -](#starting-off)
+    * Week 1 -
+        * [Starting Off](#starting-off)
+        * [Types](#types)
+        * [Logical Operators](#logical-operators)
+        * [Control Flow](#control-flow)
+        * [Arrays and ArrayLists](#arrays)
+        * [Comparing Object Elements](#comparing-object-elements)
+    * Week 2 - 
+        * [Loops](#loops)
+        * [Useful Methods](#useful-methods)
+        * [Object Oriented Programming](#object-oriented-programming)
+        * [Testing](#testing)
+        * [TDD with FizzBuzz](#tdd-test-driven-development)
+        * [Multiple Classes](#multiple-classes)
+    * Week 3 -
+        * [Inheritance](#inheritance)
+        * [Setting Up Interfaces](#setting-up-interfaces)
+        * [Association](#association)
+        * [Algorithms and Big O Notation](#algorithms-and-big-o-notation)
+        * [Stacks and Queues](#stacks-and-queues)
+    * Week 4 - 
+        * [ENUM](#enum)
+        * [Scanners and Exceptions](#scanners-and-exceptions)
+            - [Guessing Game](#guessing-game-example)
+        * [Flights Lab [IMPORTANT]](#flights-lab)
+        * [Debugging Tools](#debugging-tools)
+    * Week 5 -
+        * [API](#apis)
+            - [RESTful Convention](#restful-routing)
+            - [Status Codes](#status-codes)
+        * [Spring](#spring)
+            - [Hello World Example](#hello-world-code)
+        * [POJO, DTO, JSON](#pojos-dtos--json)
+        * [Word Guesser Game](#word-guesser-game-using-spring-boot)
+            - [Postman](#postman)
+    * Week 6 -
+        * [Service Layer](#service-layer)
+        * [Dependency Injection](#dependency-injection)
+            -  [Spring Implementation](#springs-dependency-injection)
+        * [Persisting Data](#persisting-data)
+        * [Implementing Relationships](#implementing-relationships)
+            - [One To Many](#one-to-many)
+            - [Many To Many](#many-to-many)
+        * [Dervied Queries](#derived-query-methods-in-spring)
+        * [Chocolates Lab [IMPORTANT]](#chocolates-lab)
 * Appendix -
     * [SOLID Principles](#solid-principles)
     * [UML Cheatsheet](#uml-cheatsheet)
@@ -56,10 +59,11 @@
 
 |Command|Description|
 |----|-----|
-|`cmd + <- or ->`|move to the start or end of the line|
-|`fn + backspace`|foward delete|
-|`[highlight text] + [ or ( or "`|encompasses text in brackets or quotes|
-|`cmd + [click]`|can jump from one error to method in another file|
+|`cmd` + `<-` or `->`|move to the start or end of the line|
+|`fn` + `backspace`|foward delete|
+|`[highlight text]` + `[` or `(` or `"`|encompasses text in brackets or quotes|
+|`cmd` + `[click]`|jump to sources or errors|
+|`shift` + `option` + `[click]`|allows editing of multiple lines|
 
 ## ***Starting Off***
 
@@ -213,6 +217,8 @@ Accessing the values of the array is the same as Python, e.g. `trainers[0]`
 ## ***ArrayList***
 
 ArrayList is a resizable array that can be found in `java.util` package
+
+![java_collections](/images/java-collection-hierarchy.png)
 
 **Shortcut**: click on `ArrayList<[type]>` and then, [option + enter] to import class
 
@@ -1885,6 +1891,54 @@ To avoid infinite recursion when GET request is called, e.g. `game has a player 
 
 We add an ignore tag on the properties in each case.
 
+### Many to Many
+
+
+In the Chocolates lab below, we have a One to Many relationship between the estates and chocolates. In reality, it would instead be a Many to Many relationship.
+
+In the case of a database, we would need a join table (see Safari Lab in SQL). 
+
+Using the `chocolate_many_to_many` start code, we need to modify the tags on the properties in the `models`.
+
+We first need to classify ***who "owns" the relationship?*** e.g. student "owns" the relationship between the student and classes. Consider, who is the most important?
+
+```java
+//Chocolate.java
+    @ManyToMany
+    @JsonIgnoreProperties({"chocolates"})
+    @JoinTable(
+            name = "chocolates_estates",
+            joinColumns = @JoinColumn(name = "chocolate_id"),
+            inverseJoinColumns = @JoinColumn(name = "estate_id")
+    )
+    private List<Estate> estates;
+
+    public void addEstate(Estate estate){
+        this.estates.add(estate);
+    }
+
+    //fix other methods and constructor
+
+//Estate.java
+    @JsonIgnoreProperties({"estates"})
+    @ManyToMany(mappedBy = "estates")
+    private List<Chocolate> chocolates;
+```
+
+In DataLoader, we have to make sure that the estate object is saved, otherwise it would not have an estate_id that is joined to the chocolate when creating and adding the estate to the chocolate's property.
+
+```java
+//DataLoader.java
+        Estate rabotEstate = new Estate("Rabot Estate", "St Lucia");
+        estateRepository.save(rabotEstate); 
+
+        Chocolate saltedDark = new Chocolate("Salted Dark", 70);
+        saltedDark.addEstate(rabotEstate);
+        chocolateRepository.save(saltedDark);
+```
+
+We can keep adding estates as this is a Many to Many relationship
+
 ## Derived Query Methods in Spring
 
 Using the Repository, we can write functions that follow a protocol without implementing them ourselves. e.g,
@@ -1905,10 +1959,12 @@ Other examples include,
 
 `findByNameContaining(String infix);`
 
-`findByTop3AgeGreaterThan(int age);`
+`findByTop3AgeGreaterThanEqual(int age);`
 
 
 ## ***Chocolates Lab***
+
+**One to Many** -
 
 https://github.com/Kibiko/chocolate_lab
 
@@ -1918,7 +1974,13 @@ https://github.com/Kibiko/chocolate_lab
 
 - Requests can be made through Postman and Postico can be used to check the database
 
-[Back to Top](#java-cheatsheet)
+
+
+**Many to Many** -
+
+## Back to Top
+
+[RETURN](#java-cheatsheet)
 
 ## ***Appendix***
 

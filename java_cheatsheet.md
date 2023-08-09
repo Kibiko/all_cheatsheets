@@ -43,6 +43,9 @@
     * [Dependency Injection](#dependency-injection)
         -  [Spring Implementation](#springs-dependency-injection)
     * [Persisting Data](#persisting-data)
+    * [Implementing Relationships](#implementing-relationships)
+    * [Dervied Queries](#derived-query-methods-in-spring)
+    * [Chocolates Lab](#chocolates-lab)
 * Appendix -
     * [SOLID Principles](#solid-principles)
     * [UML Cheatsheet](#uml-cheatsheet)
@@ -1590,6 +1593,7 @@ Now when we go into a browser and open `localhost:8080/greeting`, we **GET** the
 - Carries data between processes or networks
 - Encapsulation of the serialisation's logic, it lets the program store and transfer data in a specific format
 - Its a way of moving data around whereas POJO is there to exist
+- ***An easy way to know if a model is a DTO or not, if it's in the controller as a parameter, then it most likely is a DTO since data needs to be transferred to the controller***
 
 ## ***Word Guesser Game (using Spring Boot)***
 
@@ -1652,6 +1656,7 @@ Database & Models -
 
 * Part of the backend/server, but **NOT part of the Spring application**
 * Where data is stored permanently
+* An easy way to implement is the Jakarta Persistence API
 * Models are needed at almost every step
 * Used to define the data moving around our application
 * Annotating our models will generate a database scheme for data access layer to use
@@ -1844,7 +1849,74 @@ In this example, we are considering a game with a player. The player can have ma
 
 ### One to Many
 
+The property for the Player model needs a different annotation than `@Column`,
 
+```java
+//Player.java
+...
+    @OneToMany(mappedBy = "player")
+    private ArrayList<Game> games;
+...
+
+//Game.java
+...
+    @ManyToOne
+    @JoinColumn(name = "player_id")
+    private Player player;
+...
+```
+
+We then need to add Player into the argument of the constructor for `Game`.
+
+To avoid infinite recursion when GET request is called, e.g. `game has a player and player has games with game that has a player that has games etc...`
+
+```java
+//Game.java
+    @ManyToOne
+    @JoinColumn(name = "player_id")
+    @JsonIgnoreProperties({"games"})
+    private Player player;
+
+//Player.java
+    @OneToMany(mappedBy = "player")
+    @JsonIgnoreProperties({"player"})
+    private ArrayList<Game> games;
+```
+
+We add an ignore tag on the properties in each case.
+
+## Derived Query Methods in Spring
+
+Using the Repository, we can write functions that follow a protocol without implementing them ourselves. e.g,
+
+```java
+public interface GameRepository extends JpaRepository<Game, Integer> {
+
+    List<Game> findByCompleteTrue(); // Derived Queries
+
+}
+```
+
+Other examples include,
+
+`findByNameIs(String name);`
+
+`findByNameIsNull();`
+
+`findByNameContaining(String infix);`
+
+`findByTop3AgeGreaterThan(int age);`
+
+
+## ***Chocolates Lab***
+
+https://github.com/Kibiko/chocolate_lab
+
+![chocolate_erd](/images/chocolate_lab_erd.png)
+
+- This lab covers Spring, API, Service Layers and how the database connects to the code
+
+- Requests can be made through Postman and Postico can be used to check the database
 
 [Back to Top](#java-cheatsheet)
 

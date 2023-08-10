@@ -28,7 +28,7 @@
         * [ENUM](#enum)
         * [Scanners and Exceptions](#scanners-and-exceptions)
             - [Guessing Game](#guessing-game-example)
-        * [Flights Lab [IMPORTANT]](#flights-lab)
+        * [Flights Lab](#flights-lab)
         * [Debugging Tools](#debugging-tools)
     * Week 5 -
         * [API](#apis)
@@ -48,7 +48,9 @@
             - [One To Many](#one-to-many)
             - [Many To Many](#many-to-many)
         * [Dervied Queries](#derived-query-methods-in-spring)
-        * [Chocolates Lab [IMPORTANT]](#chocolates-lab)
+        * [Chocolates Lab](#chocolates-lab)
+        * [Airline API [IMPORTANT]](#airline-api)
+        * [Layers Format](#layers-format-important)
 * Appendix -
     * [SOLID Principles](#solid-principles)
     * [UML Cheatsheet](#uml-cheatsheet)
@@ -1974,14 +1976,112 @@ https://github.com/Kibiko/chocolate_lab
 
 - Requests can be made through Postman and Postico can be used to check the database
 
+## ***Airline API***
 
+https://github.com/Kibiko/airline
+
+![airline_erd](/images/airline_ERD.png)
 
 **Many to Many** -
 
-## Back to Top
+- This API allows the user to control flights, passengers and the many to many relatipnship between the two.
 
-[RETURN](#java-cheatsheet)
+## Layers Format [IMPORTANT]
 
+Models -
+
+* Usual classes
+
+```java
+@Entity(name = "flights")
+public class Flight{
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //unique property
+
+    @Column(name = "    ", nullable = false) //arguments optional
+    //standard properties of Flight
+
+    //owners
+    @ManyToMany
+    @JsonIgnoreProperties({"passengers"})
+    @JoinTable(
+            name = "passengers_flights",
+            joinColumns = @JoinColumn(name = "passenger_id"),
+            inverseJoinColumns = @JoinColumn(name = "flight_id")
+    )
+    private List<Flight> flights;
+    
+    OR
+
+    //ownee
+    @ManyToMany(mappedBy = "flights")
+    @JsonIgnoreProperties({"flights"})
+    private List<Passenger> passengers;
+
+    //constructor
+
+    //default constructor
+
+    //methods
+}
+```
+
+* DTOs
+
+```java
+    //properties
+
+    //constructor
+
+    //default constructor
+
+    //getters and setters
+```
+
+Repository -
+
+```java
+@Repository
+public interface FlightRepository extends JpaRepository<Flight, Long> {
+
+    List<Flight> findByDestination(String destination);
+}
+```
+
+Services -
+
+```java
+@Service
+public class PassengerServices {
+
+    @Autowired
+    PassengerRepository passengerRepository;
+
+    //lots and lots of methods
+}
+```
+
+Controllers -
+
+```java
+@RestController
+@RequestMapping(value = "/passengers")
+public class PassengerController {
+
+    @Autowired
+    PassengerServices passengerServices;
+
+    @PatchMapping(value = "/{id}")
+    public ResponseEntity<Passenger> addFlightToPassenger(@RequestBody PassengerDTO passengerDTO, @PathVariable Long id) {
+
+    }
+}
+```
+##
+[BACK TO TOP](#java-cheatsheet)
+##
 ## ***Appendix***
 
 ### ***SOLID Principles***

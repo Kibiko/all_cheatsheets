@@ -2079,6 +2079,73 @@ public class PassengerController {
     }
 }
 ```
+
+## Advanced Join Table
+
+If we wanted to add more than just estates and chocolates to a join table, we would need more than just a simple join table of the Many to Many relationship implemented before where the code generated a third table with just estate_id and chocolate_id.
+
+Instead we want to create a multiple of One to Many relationships with a join table that is more complicated.
+
+ `Chocolate - one to many -> CocoaOrder <- one to many - Estate`
+
+ This CocoaOrder class can have extra details than the id, chocolate and estate properties such as the batchNumber and pricePaid. 
+
+```java
+//CocoaOrder.java
+@Entity(name = "cocoa_orders")
+public class CocoaOrder {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "chocolate_id")
+    private Chocolate chocolate;
+
+    @ManyToOne
+    @JoinColumn(name = "estate_id")
+    private Estate estate;
+
+    @Column(name = "batch_number")
+    private String batchNumber;
+
+    @Column(name = "price_paid")
+    private double pricePaid;
+
+    //constructor
+
+    //methods
+}
+```
+
+We need to modify the other two models that contain a many to many relationship to,
+
+```java
+//Chocolate.java
+@Entity
+@Table(name = "chocolates")
+public class Chocolate {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column
+    private Long id;
+
+    @Column
+    private String name;
+
+    @Column(name = "cocoa_percentage")
+    private int cocoaPercentage;
+
+//    @JsonIgnoreProperties({"chocolates"})
+    @OneToMany(mappedBy = "chocolate")
+    private List<CocoaOrder> cocoaOrders;
+
+    //constructor and methods
+}
+```
+
 ##
 [BACK TO TOP](#java-cheatsheet)
 ##

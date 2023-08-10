@@ -5,7 +5,7 @@
 1. [Terminal Commands](#terminal-commands)
 2. [GitHub Commands](#github-commands)
 3. [GitHub Collaborations](#github-collaborations)
-4. [GitHub Brances](#github-branches)
+4. [GitHub Branches](#github-branches)
     - [Merging](#merging)
     - [Issue Management](#issue-management)
 3. [Extra](#extra)

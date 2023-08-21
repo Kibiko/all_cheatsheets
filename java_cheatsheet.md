@@ -1984,7 +1984,7 @@ https://github.com/Kibiko/airline
 
 **Many to Many** -
 
-- This API allows the user to control flights, passengers and the many to many relatipnship between the two.
+- This API allows the user to control flights, passengers and the many to many relationship between the two.
 
 ## Layers Format [IMPORTANT]
 

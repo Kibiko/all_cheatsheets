@@ -11,6 +11,7 @@
 7. [Tech Adjacent Jobs](#tech-adjacent-jobs)
 8. [Technical Interview](#technical-interview)
 9. [Lloyds Banking Group Seminar](#lloyds-banking-group-seminar)
+10. [Presentation](#presentation)
 99. [Agile Methodology](#agile-methodology)
 
 ## ***Software Engineering***
@@ -228,6 +229,23 @@ Projects -
 - innovation and learning hub (devised by first BNTA group), where business and engineers are working together on courses, budgeting mobile app, work with seniors just to experiment, sit down and do collaborative coding
 - Edinburgh LBG is one of the first labs to build application updates to the cloud
 - get a mentor or a sponsor
+
+## ***Presentation***
+
+Friday 18th August -
+
+- 13:55 tech check
+- 14:00 -16:00 session time
+- 10 minutes to present
+- expect 5 mins of Q&A
+- Peers, BNTA staff, Consultants & Invited Clients
+
+Tips -
+
+- Introduce yourself 
+- Give us an agenda (what I am gonna talk about)
+- Signpost
+- Tour guide
 
 ## ***Agile Methodology***
 

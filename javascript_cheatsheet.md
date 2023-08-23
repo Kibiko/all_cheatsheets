@@ -3,7 +3,7 @@
 # Table of Contents
 
 - [FrontEnd Coding -](#)
-    * Week 7 -
+    * Week 8 -
         * [Introduction](#introduction)
             - [JavaScript vs Java](#javascript-vs-java)
         * [Node.js](#nodejs)
@@ -16,6 +16,11 @@
             - [Objects](#objects)
             - [Loops](#loops)
         * [Scope](#scope)
+        * [Functions](#functions)
+        * [Package Management Tool](#package-management-tool)
+        * [Testing](#testing)
+            - [Importing and Exporting](#importing-and-exporting-functions)
+            - [Test Coverage](#test-coverage)
         
 
 ## Introduction
@@ -320,3 +325,219 @@ which makes it unavailable outside the loop. This brings up an error when we try
 When dealing with Arrays, you can add and remove from the array even though it's a `const myArray;`. You can even change the values of the elements. However you can not assign it to be a different array. e.g. `myArray = diffArray;`
 
 This is the same with objects.
+
+## Functions
+
+Order of named functions does not matter as JavaScript hoists functions to the top. This is due to the interpreter. Below we have examples of named functions,
+
+```js
+// named functions
+function greet(timeOfDay, name){
+    console.log(`Good ${checkTime(timeOfDay)}, ${name}`);
+}
+
+function checkTime(number){
+    if(number< 12){
+        return "morning";
+    } else if(number>=12 && number <18){
+        return "afternoon";
+    } else{
+        return "evening";
+    }
+}
+
+greet(19,`Kevin`);
+```
+
+Anonymous functions do not have a name and can be assigned to a variable,
+
+```js
+//anonymous functions
+const sum = function(number1, number2){
+    return number1+number2;
+}
+
+console.log(sum(1,2));
+```
+
+Named functions are not as common, instead usually it's a safe bet to have anonymous functions which can be set to a variable and passed around the code. **Anonymous functions** order does matter!! This is not hoisted by the interpreter. Should default to anonymous functions.
+
+**Arrow functions** came in at ES6, 
+
+```js
+//arrow functions
+const multiply = (number1, number2) => { //longer implementation
+    return number1 + number2;
+}
+
+OR
+
+const multiply = (number1, number2) => number1 + number2; //simpler with implicit return
+
+console.log(multiply(2,5));
+```
+
+This is much simpler out of the three and since it has come in recently, not as much use as anonymous functions but should be a nice default as well for future.
+
+## Package Management Tool
+
+Packages are code that other people have written which can be used. These are essentially libraries in Python.
+
+Maven is a PMT that we are used to. Gradle is also another. Both can do similar things but not everything that each can do.
+
+In JavaScript, we have NPM and yarn. 
+
+NPM is Node Package Manager. Essentially how it works is that if a package relies on another one and that relies on another etc, this helps make sure you have the dependencies needed. 
+
+### Setup
+
+(Npm should come with node)
+
+`npm init` in the terminal at the root folder *(like git)* 
+
+Hit `enter` and can add description, entry point, test command, git repository and keywords. The flag `-y` after `npm init` skips through all.
+
+This creates a `package.json` file.
+
+`npm install [package name]` or `npm i [package name]` installs a package
+
+```js
+//package.json
+{
+  "name": "npm_intro",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Kibiko",
+  "license": "ISC",
+  "dependencies": {
+    "five": "^0.8.0" //dependency added, the ^ means it takes most updates or 0.8.0
+  }
+}
+```
+
+A new file called `package-lock.json` is created along with a `node_modules` folder. The `package-lock.json` file should not be changed as it keeps the specific version of the dependency. The `node_modules` folder is one thing to be very familiar with.
+
+This folder contains the code where the dependency is. This contains the source code, ignores, readmes etc. This gives you everything to inspect and change however you want.
+
+If the `node_modules` folder is nuked, you can use `npm install` to get the package back. This way, you do not have to send over the entire node_modules folders but just the `package.json` since it has the dependencies needed. This also helps with storage, you can always remove the node modules when the project is not in use and install it when needed.
+
+NOTE: Always create a `.gitignore` file that ignores `node_modules`.
+
+*.gitignore*
+```
+node_modules
+```
+
+### Using Packages
+
+We can import the package into a file through,
+
+```js
+const five = require("five");
+
+console.log(five.japanese());
+```
+
+Now we can call the methods of the package which we assigned `five` to be.
+
+## Testing
+
+Most popular packages are chai, mocha and jest. Jest by far is the most downloaded testing package with regular support.
+
+`npm install -D jest` - the extra flag makes devDependencies rather than dependencies in the `package.json` file. The testing package is only useful for the developers and not the end user. This is why we need the tag for Jest. If we publish the code, Jest will not be a part of it.
+
+### Importing and Exporting Functions
+
+To import functions, we have to make sure to export them first from the file.
+
+```js
+//calculator.js
+const sum = (number1, number2) => {
+    return number1 + number2;
+}
+
+module.exports = {sum} //needed to make function avaiable globally
+```
+
+A test file should always have the naming convention `[name].test.js`,
+
+```js
+//calculator.test.js
+const {sum} = require('./calculator'); //imports sum function from calculator.js 
+                                       //through file path ./calculator
+```
+
+To use the Jest testing framework, we call the `test()` method with arguments,
+
+```js
+test("can add two small positive numbers", () => {
+    //Arrange
+    const expected = 5;
+    //Act
+    const actual = sum(2,3);
+    //Assert
+    expect(actual).toBe(expected);
+})
+```
+
+To run our package of test and calculator, we modify the scripts in `package.json`,
+
+```js
+"scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+
+===========>
+
+"scripts": {
+    "test": "jest"
+  },
+```
+
+When we run `npm test`, it runs the tests for us and spits out the results of the tests. In reality we need more than just one test for a function. A good way to distinguish between blocks of tests is by adding a `describe()`,
+
+```js
+//calculator.test.js
+const {sum} = require('./calculator');
+
+describe('addition functionality', () => {
+
+test("can add two small positive numbers", () => {
+    //Arrange
+    const expected = 5;
+    //Act
+    const actual = sum(2,3);
+    //Assert
+    expect(actual).toBe(expected);
+});
+
+test("can add two small negative numbers", () => {
+    //Arrange
+    const expected = -12;
+    //Act
+    const actual = sum(-7,-5);
+    //Assert
+    expect(actual).toBe(expected);
+});
+
+});
+```
+
+### Test Coverage
+
+To add test coverage in JavaScript, we add a new script in the `package.json`,
+
+```json
+"scripts": {
+    "test": "jest",
+    "test:coverage": "jest --coverage"
+  },
+```
+
+We then call it through `npm run test:coverage` since this script is a custom one that we have made to test the coverage of our code. This creates a `coverage` folder which shows the reports in the `lcov-report`. Handily, we have the `index.html` file which can be opened in browser to show the coverage in a nice way.
+
+

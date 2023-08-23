@@ -113,10 +113,10 @@
 - Write tests to ensure the product meets the specification 
 - These include stress tests, security tests, automated end-user tests... etc.
 - Forms of testing:
-    - Unit 
-    - Integration
-    - End-to-end
-    - Acceptance
+    - Unit - smallest testable parts of an application e.g. methods
+    - Integration - whole software module is tested, combined
+    - End-to-end - under product like circumstances and data to replicate live settings. What a real user scenario looks like from start to finish
+    - Acceptance - quality assurance process. e.g. beta testing, end-user testing, field testing
 - Fully techy role
 
 ## ***"Tech Adjacent" Jobs***

@@ -220,4 +220,5 @@ In addition to the fine imposed by the ICO, the Dutch Data Protection Authority 
 ***How might the programs you have built so far, breach regulations?***
 
 
+
 [Back To Top](#notes)

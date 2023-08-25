@@ -51,6 +51,8 @@
         * [Chocolates Lab](#chocolates-lab)
         * [Airline API [IMPORTANT]](#airline-api)
         * [Layers Format](#layers-format-important)
+    * Week 7 -
+        * [Bookshelf API](#bookshelf-api)
 * Appendix -
     * [SOLID Principles](#solid-principles)
     * [UML Cheatsheet](#uml-cheatsheet)
@@ -2145,6 +2147,20 @@ public class Chocolate {
     //constructor and methods
 }
 ```
+
+## Bookshelf API
+
+### Models
+
+![models](/images/bookshelf_UML_models.png)
+
+### Service Layers
+
+![service layers](/images/bookshelf_UML_routes.png)
+
+## Entity Relationship Diagram
+
+![erd](/images/bookshelf_ERD.png)
 
 ##
 [BACK TO TOP](#java-cheatsheet)

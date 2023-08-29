@@ -31,12 +31,19 @@
             - [Filtering](#filtering)
             - [Reducing](#reducing)
         * [HMTL-CSS-JavaScript](#html-css-javascript)
+            - [UX - User Experience](#ux-user-experience)
             - [Wireframes](#wireframe)
             - [Semantic HTML](#semantic-html)
         * [Duck Example](#duck-appreciation-example)
             - [Useful Links](#useful-links)
         * [Art Website Example](#art-website-example)
             - [Useful CSS](#useful-css)
+        * [Web Content Accessibility Guidelines](#web-content-accessibility-guidelines)
+    * Week 9 - 
+        * [DOM - Document Object Model](#dom---document-object-model)
+        * [Functionality (Events)](#functionality-events)
+            - [Favicon](#favicon)
+            - [Buttons](#buttons)
         
 
 ## Introduction
@@ -803,6 +810,48 @@ console.log(totalAge);
 
 The overall experience of a person using a product such as a website or computer application. How easy or pleasing it is to use.
 
+Important to consider all the stages,
+
+e.g. Buying a book
+
+- Where to buy it
+- How to find it
+- Comparison on prices
+- How many steps to purchase
+- Payment (one click buy)
+- Shippings, lead times
+- Delivery
+- Feedback
+
+### UX Design Cycle
+
+- Strategy
+- Discovery
+- Analysis
+- Design
+- Product
+
+(cycle through)
+
+### Personas
+
+- Similar to a profile, a character sketch
+- Ideally created after research
+- Gather information about your users and transforming into a set of fact-based profiles
+- Able to demonstrate real needs and goals of your users
+- Watch out for stereotypes - no Karens, no Chads
+- Persona spectrum - design for inclusion
+- This is used to extrapolate user needs
+
+***Proto-persona***
+
+- BIO
+- DEMOGRAPHICS
+- NEEDS & GOALS
+- BEHAVIOURS
+
+![persona](/images/persona.png)
+
 ### Wireframe
 
 - A wireframe is the outline of a web page or app
@@ -1000,4 +1049,219 @@ header{
     background-color: black;
     color: white;
 }
+```
+
+## Web Content Accessibility Guidelines
+
+https://www.gov.uk/service-manual/helping-people-to-use-your-service/understanding-wcag
+
+## DOM - Document Object Model
+
+***What is the DOM?***
+
+- something created by browser when HTML document loads inside it
+- aim is to interact with the HTML doc from our JavaScript code so that we can change, add or remove content
+
+The DOM consists of -
+
+- A node tree: a representation of all the elements that make up the current page
+
+![node-tree](/images/node_tree.png)
+
+- Provides up with Methods and Properties that allow us to manipulate the node-tree using JavaScript
+
+**Window and Document**
+
+- The `window` represents and open window in a browser
+- Known as the browser's global object
+- We can access the DOM via the window : `window:document`
+- We have already done this through `window.console.log`
+
+### Example
+
+We create two files, `index.html` and `index.js`
+
+We can start with `html:5` to insert the boilerplate code in VS.
+
+Make sure to include `<script src="index.js" type="text/javascript" defer></script>`
+
+*index.html*
+```html
+<body>
+
+    <h1 id="main-heading">Heading</h1>
+    <p class="paragraph">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Laborum deserunt sint impedit hic id excepturi debitis eum alias illum qui iste veniam, iure nesciunt voluptas quo amet harum? Dolor, voluptatem?</p>
+    <p class="paragraph">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quasi quaerat earum optio aperiam esse dolorum illo, repellendus sint a maiores tempora dolores id. Porro numquam cum atque velit quos ipsam.</p>
+    <h2>Sub heading</h2>
+    <ul class="list"></ul>
+
+</body>
+```
+
+*index.js*
+```js
+const paragraph = document.querySelector(".paragraph");
+console.log(paragraph);
+```
+
+We can use JavaScript to call the `query` of the DOM provided. In our case, it is the paragraph class and we call it out into the console. When inspecting the webpage through chrome, we can see the **FIRST** instance of paragraph and it prints it out to the console.
+
+You can interact with the DOM inside the console.
+
+![interact](/images/interact_dom.png)
+
+### Methods on the DOM API
+
+![dom methods](/images/dom_methods.png)
+
+NOTE: The most popular methods are the last two.
+
+### Altering Text
+
+With the header, we can edit it through the innerText property of the heading. It is unwise to hard code all changes in HTML, therefore it's nice to edit it through the DOM via JavaScript.
+
+```js
+const heading = document.querySelector("#main-heading")
+console.log(heading);
+heading.innerText = "Cool stuff I've learned about the DOM";
+```
+
+When querying more than one section via `querySelectAll`, you have to access the return list via indexing as usual,
+
+```js
+const paragraphs = document.querySelectorAll(".paragraph");
+paragraphs[0].innerText = "Lorem can go away"
+paragraphs[1].innerText ... etc
+```
+
+We can chain the methods like in Java and JS,
+
+```js
+document.querySelector("h2").innerText = "Sub sub sub heading";
+```
+
+### Creating Elements
+
+We can create an element by calling the `createElement` method and passing in the tag you want to create,
+
+```js
+const listItem1 = document.createElement("li");
+listItem1.innerText = "About us";
+
+const listItem2 = document.createElement("li");
+listItem2.innerText = "Contact";
+
+const list = document.querySelector(".list");
+list.appendChild(listItem1);
+list.appendChild(listItem2);
+
+list.removeChild(list.lastChild) //removes last element of list
+```
+
+## Functionality (Events)
+
+We have covered the different methods of altering text, changing elements, but how do we make this functionality available to people using the webpage? This could be via, scroll, mouse click, buttons, dropdown etc...
+
+### Favicon
+
+```html
+ <link rel="icon" type="image/x-icon" href="./favicon.png">
+```
+
+### Buttons
+
+*index.html*
+```html
+<button id="btn">CLICK ME</button>
+```
+
+*index.js*
+```js
+const button = document.querySelector("#btn");
+
+const printButtonConfirmation = () => {
+    console.log("Button Clicked");
+}
+
+button.addEventListener("click", printButtonConfirmation);
+```
+
+### Inputs
+
+We can deal with inputs through,
+
+*index.html*
+```html
+    <div id="box">
+        <h2 class="caption">Hello World!</h2>
+    </div>
+    <input type="text" id="text-input" placeholder="Enter a message...">
+```
+
+*index.js*
+```js
+const box = document.querySelector("#box");
+const caption = document.querySelector(".caption");
+const input = document.querySelector("#text-input");
+
+input.addEventListener("input", (event) => {
+    console.log(event.target.value);
+    caption.innerText = event.target.value;
+});
+```
+
+The `event.data` returns the value of the single keystroke, but the `target.value` takes in the whole string of the event.
+
+### Options
+
+`select>option*5 + TAB`
+
+This shortcut gives us 5 options that can be chosen.
+
+*index.html*
+```html
+    <select name="color-picker" id="color-picker">
+        <option value="red">Red</option>
+        <option value="blue">Blue</option>
+        <option value="green">Green</option>
+        <option value="yellow">Yellow</option>
+        <option value="hot-pink">Hot Pink</option>
+    </select>
+```
+
+*index.js*
+```js
+const dropdown = document.querySelector("#color-picker");
+
+
+dropdown.addEventListener("change", (event) =>{
+    const newColor = event.target.value;
+    box.setAttribute("style", `background-color: ${newColor}`);
+});
+```
+
+This is more of a sledgehammer way, where the `element.style` overrides the css code when it is changed to a different background color.
+
+### Color (to be tested)
+
+`<input type="color">`
+
+### History
+
+We can store the history of the choices through,
+
+```js
+const history = document.querySelector("#history");
+
+const createAndAppendListItem = (content) =>{
+    const newListItem = document.createElement("li");
+    newListItem.innerText = content;
+    history.appendChild(newListItem);
+}
+
+dropdown.addEventListener("change", (event) =>{
+    const newColor = event.target.value;
+    box.setAttribute("style", `background-color: ${newColor}`);
+    createAndAppendListItem(newColor);
+});
 ```

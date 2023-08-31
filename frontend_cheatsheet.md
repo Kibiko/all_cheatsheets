@@ -4,18 +4,16 @@
 
 - [FrontEnd Coding -](#)
     * Week 8 -
-        * [Introduction](#introduction)
-            - [JavaScript vs Java](#javascript-vs-java)
+        * <details><summary><a href="#introduction">Introduction</a></summary>
+            - <a href="#javascript-vs-java">JavaScript vs Java</a></details>
         * [Node.js](#nodejs)
         * [JavaScript Shortcuts](#javascript-shortcuts)
-        * [Basics](#javascript-basics)
-            - [Formatting](#formatting)
-            - [Conditionals](#conditionals)
-                * [Falsy Values](#falsy-values)
-                * [Type Coercion](#type-coercion)
-            - [Arrays](#arrays)
-            - [Objects](#objects)
-            - [Loops](#loops)
+        * <details><summary><a href="#javascript-basics">Basics</a></summary>
+            - [Formatting]
+            - [Conditionals]
+            - [Arrays]
+            - [Objects]
+            - [Loops]</details>
         * [Scope](#scope)
         * [Functions](#functions)
         * [Package Management Tool](#package-management-tool)
@@ -44,6 +42,18 @@
         * [Functionality (Events)](#functionality-events)
             - [Favicon](#favicon)
             - [Buttons](#buttons)
+        * [ToDo List](#to-do-list)
+        * [Synchronicity](#synchronicity)
+            - [Promise](#promise)
+            - [Response](#response)
+            - [DB Serialisation](#db-serialisation)
+            - [Async/Await](#asyncwait)
+        * [Handling Objects in JSON](#handling-objects-in-json-data)
+        * [REACT](#react)
+            - [Destructuring](#destructuring)
+            - [Intro](#intro)
+            - [Getting Started](#getting-started)
+            - [Components](#components)
         
 
 ## Introduction
@@ -1265,3 +1275,495 @@ dropdown.addEventListener("change", (event) =>{
     createAndAppendListItem(newColor);
 });
 ```
+
+## To Do List
+
+https://github.com/Kibiko/js_events
+
+This front end code is a to do list which incorporates the following functionality
+
+- adding a task to the todo list
+- adding a functional delete button to the task
+- adding a functional checkbox to the task
+- grey and crossing out a completed task
+- moving a completed task to the completed list
+- adding a functional delete button to the completed task
+
+### script.js
+
+```js
+const input = document.querySelector("#new-todo");
+const button = document.querySelector("#enter");
+const list = document.querySelector("#list");
+const dateButton = document.querySelector("#date");
+const date = document.querySelector("#show-date");
+const completedList = document.querySelector("#completed-list");
+
+//shows date
+const showDate = () => {
+    console.log(Date());
+    dateButton.innerText = Date();
+}
+
+dateButton.addEventListener("click", showDate)
+
+//create and append list with task, delete button and checkbox
+const createAndAppendListItem = () => {
+    const newListItem = document.createElement("li");
+    newListItem.innerText = input.value;
+    const newCompletedItem = document.createElement("li");
+    newCompletedItem.innerText = newListItem.innerText;
+
+    //delete button
+    const deleteButton = document.createElement("button");
+    deleteButton.innerText = "Delete";
+    deleteButton.addEventListener("click",() => {
+        list.removeChild(newListItem);
+    });
+    deleteButton.className = "delete";
+    newListItem.appendChild(deleteButton);
+
+    //complete checkbox
+    const completeButton = document.createElement("input");
+    completeButton.type = "checkbox";
+    const deleteComplete = document.createElement("button");
+    completeButton.onclick = () => {
+        if(completeButton.checked == true){ //moving task to completed list
+            newListItem.classList.add("completedTask");
+            completedList.appendChild(newCompletedItem);
+            deleteComplete.addEventListener("click", () => {
+                completedList.removeChild(newCompletedItem);
+            })
+            deleteComplete.innerText = "Delete";
+            deleteComplete.className = "delete";
+            newCompletedItem.appendChild(deleteComplete);
+        } else {
+            newListItem.classList.remove("completedTask");
+            completedList.removeChild(newCompletedItem);
+        }
+    }
+    newListItem.appendChild(completeButton);
+    list.appendChild(newListItem);
+}
+
+//button click
+button.addEventListener("click", createAndAppendListItem);
+```
+
+## Synchronicity
+
+JavaScript executes code in a single thread, which means it executes one statement at a time. As expected, it executes code in order and must finish executing a piece of code before moving onto the next.
+
+Asynchronous programming is a technique that enables your program to start a potentially long-running task and still be able to be responsive to other events while that task runs, rather than having to wait until that task has finished. Once that task has finished, your program is presented with the result.
+
+A good example is generating prime numbers and then displaying it.
+
+This is the basic problem with long-running synchronous functions. What we need is a way for our program to:
+
+- Start a long-running operation by calling a function.
+- Have that function start the operation and return immediately, so that our program can still be responsive to other events.
+- Notify us with the result of the operation when it eventually completes.
+
+That's precisely what asynchronous functions can do. The rest of this module explains how they are implemented in JavaScript.
+
+### Promise
+
+A fetch request is an asynchronous event.
+
+*app.js*
+```js
+const fetchDogImage = () => {
+    const request = fetch("https://dog.ceo/api/breeds/image/random");
+    console.log(request);
+}
+
+fetchDogImage();
+```
+
+This event comes back as a promise. This `Promise` object is telling us that they are starting it but it might not come back. It is the eventual completion (or failure) of an asynchronous operation and its resulting value.
+
+![](/images/promise.png)
+
+### Response
+
+```js
+const fetchDogImage = () => {
+    const request = fetch("https://dog.ceo/api/breeds/image/random")
+        .then(response => console.log(response)) //wait for this process to finish, then do what you need to do
+    console.log("This is the last line");
+}
+
+fetchDogImage();
+```
+
+![](/images/response.png)
+
+This instead, returns a `Response` object. Now we can see that as the request is being executed, the code moves onto the next line and returns `"This is the last line"` before the response comes back. Here we can see a good example of asynchronous coding.
+
+### DB Serialisation
+
+How do we convert this data to something useful?
+
+```js
+const fetchDogImage = () => {
+    const request = fetch("https://dog.ceo/api/breeds/image/random")
+        .then(response => response.json())
+        .then(data => console.log(data))
+}
+```
+
+We can convert the response to a json object and then we can see how the data is represented by logging it out. The data comes out in JSON format.
+
+In order to use the data back into the code, we can change the `console.log(data)`, to a `querySelector`,
+
+```js
+const fetchDogImage = () => {
+    const request = fetch("https://dog.ceo/api/breeds/image/random")
+        .then(response => response.json())
+        .then(data => document.querySelector("#dog-image").src = data.message);
+};
+
+fetchDogImage();
+
+const randomDogButton = document.querySelector("#dog-button");
+
+randomDogButton.addEventListener("click", fetchDogImage);
+```
+
+Now we can add functionality to the button as well to call the method.
+
+### Async/Wait
+
+To keep this code up to date and current trend, we need to modify the function to include the tags of `async` and `await`. This gives it a cleaner look and easier to understand and read,
+
+```js
+const fetchDogImage = async () => {
+    const response = await fetch("https://dog.ceo/api/breeds/image/random");
+    const jsonData = await response.json();
+    document.querySelector("#dog-image").src = jsonData.message;
+};
+```
+
+The `await` keyword can only be used inside an `async` function.
+
+The `await` keyword makes the function pause the execution and wait for a resolved promise before it continues.
+
+When dealing with multiple `messages` which contain the url of multiple images, we will have to loop through the jsonData by using the `forEach()` mapping method,
+
+```js
+const fetchDogImage = async () => {
+    const response = await fetch("https://dog.ceo/api/breed/germanshepherd/images");
+    const jsonData = await response.json();
+   
+    const imageContainer = document.createElement("div");
+    
+    jsonData.message.forEach(url => {
+        const dogImage = document.createElement("img");
+        dogImage.src = url;
+        imageContainer.appendChild(dogImage);
+    });
+
+    document.querySelector("body").appendChild(imageContainer);
+};
+```
+
+## Handling Objects in JSON Data
+
+Pagination is creating extra keys in the json object to present small bits of the large data to the front end. This can include a link to previous page and next page. In the below, they show only 50 characters on a page and then provide links to the next pages with the next 50.
+
+![](/images/pagination.png)
+
+A useful method for all this is `Promise.all()`. We are able to create multiple fetch requests in this method and wait for all of these methods to resolve before we `callback` to do things with the data.
+
+Steps:
+
+- Generate a for loop that creates different fetch requests
+- Collect them into an array
+- Promise all of the requests in the array
+- Then callback and do something
+
+```js
+// Create multiple fetch requests with similar URLs
+// only difference between urls is a page number
+// use promise.all magic
+
+const allPromises = [];
+
+for(let i = 1; i < 26; i++){
+    allPromises.push(
+        fetch(`https://api.disneyapi.dev/character?page=${i}&pageSize=300`)
+        .then((response) => response.json())
+    )
+}
+
+Promise.all(allPromises) //wait til all promises are fulfilled and all the data comes back 
+.then((allResults) =>{
+    console.log(allResults);
+})
+```
+
+The full functionality of the `promise.all()` is below where we append it to a list on our html,
+
+```js
+Promise.all(allPromises) //wait til all promises are fulfilled and all the data comes back 
+.then((allResults) =>{
+    // console.log(allResults);
+    //allResults = [{[]}, {[]}] is an array of objects of arrays
+    const allCharacters = allResults.map((result) => result.data).flat() //map through objects and only give back the data key
+    // if arrays have arrays in them, it will unpack the arrays inside
+    console.log(allCharacters);
+
+    const characterList = document.querySelector("ul");
+
+    allCharacters.forEach((character) =>{
+        const characterLi = document.createElement("li");
+
+        const characterAnchor = document.createElement("a");  //anchors for links
+        characterAnchor.textContent = character.name;
+        characterAnchor.href = character.sourceUrl;
+
+        characterLi.appendChild(characterAnchor);
+
+        characterList.appendChild(characterLi);
+    })
+});
+```
+
+## REACT
+
+### Destructuring
+
+We can destructure code by assigning variables through a different syntax. This is useful because we can pick multiple things out easily from arrays or objects,
+
+```js
+const numbers = [10, 20, 30, 40];
+
+// WITHOUT destructuring
+
+const ten = numbers[0];
+const twenty = numbers[1];
+
+console.log(ten);
+console.log(twenty);
+
+// WITH destructuring
+
+const [ten, twenty, ...rest] = numbers;
+
+console.log(ten); //10
+console.log(twenty); //20
+console.log(rest); //[30, 40]
+```
+
+In terms of objects,
+
+```js
+//example 2
+
+const person = {
+    name: "Sally",
+    age: 25
+}
+
+// WITHOUT destructuring
+
+const name = person.name;
+const age = person.age;
+
+// WITH destructuring
+
+const { name, age } = person;
+
+console.log(name); //"Sally"
+console.log(age); //25
+```
+
+***This is very common in REACT!***
+
+### Intro 
+
+Vanilla JS can get really messy therefore we have frameworks to help make it cleaner, easier to read, maintain and solve for bugs.
+
+Frameworks streamline the process of building a web app and often integrate HTML and JS code closer than would be possible otherwise.
+
+**What is REACT?**
+
+- Library written in JavaScript but acts like a framework
+- Makes it easy to develop user interfaces
+- Think of it as the 'view layer' in our application
+- Open source!
+
+**Why REACT?**
+
+- https://stateofjs.com/en-US (ranking all the frameworks)
+- Loads of frameworks to choose from: Vue, Angular...
+- React is a very strong contender since 2013 release and backed by Meta
+
+**Benefits**
+
+- Component based UI - breaking down our UI into smaller parts called components
+    - Each part is looking after one thing
+    - JSX syntax
+    - Looks more like HTML
+
+```js
+import logo from './logo.svg';
+import './App.css';
+
+function App() {
+  return (
+    <div className="App">
+      <header className="App-header">
+        <img src={logo} className="App-logo" alt="logo" />
+        <p>
+          Edit <code>src/App.js</code> and save to reload.
+        </p>
+        <a
+          className="App-link"
+          href="https://reactjs.org"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Learn React
+        </a>
+      </header>
+    </div>
+  );
+}
+
+export default App;
+```
+
+Above we see it's a JavaScript file however it contains HTML looking code. What REACT allows us to do is mix the two and type in JSXML. Under the hood, every tag we add essentially is a `createElement()` method.
+
+* One way data flow
+    * Set up is hierarchical
+    * Parent component is responsible for tracking all the application's data
+    * This is known as **state**
+    * Responsible for sending data to 'children' components
+    * Data sits 'high' in a REACT Application
+
+![state](/images/state.png)
+
+- Virtual DOM
+    - Updating the browser using JS is expensive
+    - Keeps a virtual version of the DOM in memory and only updates the real DOM where necessary
+    - When we make a change it updates the virtual DOM and compares it to the real DOM
+    - Doesn't have to burn the DOM and make a new one
+
+![virtual dom](/images/virtual_dom.png)
+
+* Single Page Applications (SPAs)
+    * SPA is when server only sends one HTML page...
+    * 
+
+### Getting Started
+
+- `npm install react` to install the library
+- `npx create-react-app my-app-name` to create the app and gives us boilerplate code
+
+### Starting the app
+
+- `npm start`
+
+Now we can type in JS and HTML into the same file!
+
+```js
+import './App.css';
+
+function App() {
+  //java script goes here
+
+  return ( //html goes in here
+    <div className='blue'>
+      <h1>Hello World!</h1> 
+        <p>Welcome to this amazing React app where you can write JSXML!</p>
+    </div>
+    );
+}
+
+export default App;
+```
+
+the `return` can only be one `parent`. Therefore, we have to enclose everything into one `<div>` or `fragment` tag. If there are further divisions in the HTML part, `fragments` should be added which are essentially empty tags, `<> , </>`.
+
+One thing to note is that to define a class, we need `className` since JS has class inherently.
+
+### Mixing Both Sections
+
+As both HTML and JS sections are separated, we are actually able to code JS into the HTML section. This is through the `{ }` braces in the HTML side and ...
+
+```js
+import './App.css';
+
+function App() {
+  //java script goes here
+
+  let counter = 0;
+
+  const incrementCounter = () => {
+    counter++;
+  }
+
+  return ( //html goes in here
+    <div className='blue'>
+      <h1>Hello World!</h1> 
+      <hr></hr>
+      <p>The current value of the counter is {counter}</p> {/* The curly braces makes it able to access the JS part*/}
+      <button onClick={incrementCounter}>Increment Counter</button>
+    </div>
+    );
+}
+
+export default App;
+```
+
+### State Saving
+
+https://www.freecodecamp.org/news/usestate-hook-3-different-examples/
+
+When adding a button into the code, we see that the state does not get updated when the button is clicked. In order to tell REACT to watch this state and update it whenever we click the increment button,
+
+```js
+import { userState } from `react`; //hook
+//other imports
+
+function App() {
+  //java script goes here
+
+    let [counter, setCounter] = useState(0); //updated to denote this variable as a state
+    //rest of JS part
+
+    const incrementCounter = () => {
+    setCounter(counter+=1); //this has to be modified as well, we have to use the method set
+
+    return ( 
+        // html code
+    )
+}
+```
+
+Note that the second part of the variable 'array' is almost always `set{firstPart}`. This lets us set the hook name to which we can update the counter with whatever new variable or method we wish to use.
+
+A `hook` allows us to “hook into” React state and lifecycle features from function components.
+
+### Components
+
+These are essentially reusable methods and functions that we can use in the REACT code. Whenever we need to repeat functionality in the code we can create a component and call it in the REACT code.
+
+![](/images/wireframe_react.png)
+
+In the above wireframe we see repeating buttons and layout. We need to draw a `component diagram` to figure out how to the data flows. Since REACT will only allow data to flow from parent to child, **never** child to parent or child to child, planning is essential.
+
+Number of components do not matter in a diagram, it indicates the flow of data. `Containers` should be the place where the state is kept and where the heavy lifting should be. `Components` should not be doing anything complex and should only function to do simple things.
+
+![](/images/components_diagram.png)
+
+In terms of code, 
+
+### Inspecting Componenets
+
+![](/images/components_direction.png)
+
+![](/images/components_list.png)
+

@@ -9,51 +9,53 @@
         * [Node.js](#nodejs)
         * [JavaScript Shortcuts](#javascript-shortcuts)
         * <details><summary><a href="#javascript-basics">Basics</a></summary>
-            - [Formatting]
-            - [Conditionals]
-            - [Arrays]
-            - [Objects]
-            - [Loops]</details>
+            - <a href="#formatting">Formatting</a><br>
+            - <a href="#conditionals">Conditionals</a><br>
+            - <a href="#arrays">Arrays</a><br>
+            - <a href="#objects">Objects</a><br>
+            - <a href="#loops">Loops</a></details>
         * [Scope](#scope)
         * [Functions](#functions)
         * [Package Management Tool](#package-management-tool)
-        * [Testing](#testing)
-            - [Importing and Exporting](#importing-and-exporting-functions)
-            - [Test Coverage](#test-coverage)
-        * [Constructors & Prototypes](#constructors--prototypes)
-            - [Modules](#modules)
-            - [Inheritance](#inheritance)
-            - [Higher Order Functions](#higher-order-functions)
-        * [Enumeration](#enumeration)
-            - [Mapping](#mapping)
-            - [Filtering](#filtering)
-            - [Reducing](#reducing)
-        * [HMTL-CSS-JavaScript](#html-css-javascript)
-            - [UX - User Experience](#ux-user-experience)
-            - [Wireframes](#wireframe)
-            - [Semantic HTML](#semantic-html)
-        * [Duck Example](#duck-appreciation-example)
-            - [Useful Links](#useful-links)
-        * [Art Website Example](#art-website-example)
-            - [Useful CSS](#useful-css)
+        * <details><summary><a href="#testing">Testing</a></summary>
+            - <a href="#importing-and-exporting-functions">Importing and Exporting</a><br>
+            - <a href="#test-coverage">Test Coverage</a></details>
+        *  <details><summary><a href="#constructors--prototypes">Constructors & Prototypes</a></summary>
+            - <a href="#modules">Modules</a><br>
+            - <a href="#inheritance">Inheritance</a><br>
+            - <a href="#higher-order-functions">Higher Order Functions</a></details>
+        * <details><summary><a href="#enumeration">Enumeration</a></summary>
+            - <a href="#mapping">Mapping</a><br>
+            - <a href="#filtering">Filtering</a><br>
+            - <a href="#reducing">Reducing</a></details>
+        * <details><summary><a href="#html-css-javascript">HMTL-CSS-JavaScript</a></summary>
+            - <a href="#ux-user-experience">UX - User Experience</a><br>
+            - <a href="#wireframe">Wireframes</a><br>
+            - <a href="#semantic-html">Semantic HTML</a></details>
+        * <details><summary><a href="#duck-appreciation-example">Duck Example</a></summary>
+            - <a href="#useful-links">Useful Links</a></details>
+        * <details><summary><a href="#art-website-example">Art Website Example</a></summary>
+            - <a href="#useful-css">Useful CSS</a></details>
         * [Web Content Accessibility Guidelines](#web-content-accessibility-guidelines)
     * Week 9 - 
         * [DOM - Document Object Model](#dom---document-object-model)
-        * [Functionality (Events)](#functionality-events)
-            - [Favicon](#favicon)
-            - [Buttons](#buttons)
+        * <details><summary><a href="#functionality-events">Functionality (Events)</a></summary>
+            - <a href="#favicon">Favicon</a><br>
+            - <a href="#buttons">Buttons</a></details>
         * [ToDo List](#to-do-list)
-        * [Synchronicity](#synchronicity)
-            - [Promise](#promise)
-            - [Response](#response)
-            - [DB Serialisation](#db-serialisation)
-            - [Async/Await](#asyncwait)
+        * <details><summary><a href="#synchronicity">Synchronicity</a></summary>
+            - <a href="#promise">Promise</a><br>
+            - <a href="#response">Response</a><br>
+            - <a href="#db-serialisation">DB Serialisation</a><br>
+            - <a href="#asyncwait">Async/Await</a></details>
         * [Handling Objects in JSON](#handling-objects-in-json-data)
-        * [REACT](#react)
-            - [Destructuring](#destructuring)
-            - [Intro](#intro)
-            - [Getting Started](#getting-started)
-            - [Components](#components)
+        * <details><summary><a href="#react">REACT</a></summary>
+            - <a href="#destructuring">Destructuring</a><br>
+            - <a href="#intro">Intro</a><br>
+            - <a href="#getting-started">Getting Started</a><br>
+            - <a href="#components">Components</a></details>
+        * [Bakery - Cake Example](#bakery---cake-example)
+        * [CI & CD](#cicd)
         
 
 ## Introduction
@@ -1766,4 +1768,57 @@ In terms of code,
 ![](/images/components_direction.png)
 
 ![](/images/components_list.png)
+
+## Bakery - Cake Example
+
+https://github.com/Kibiko/react_bakery
+
+### Useful Parts
+
+*CakeDisplay.js*
+```js
+const CakeDisplay = ({cake}) => {
+
+    const displayIngredients = cake.ingredients.map((ingredient) =>{  //maps through and returns list items in an array
+        return <li>{ingredient}</li>
+    });
+
+    return(
+        <>
+            <h2>{cake.cakeName}</h2>
+            <h3>Ingredients:</h3>
+                <ul>{displayIngredients}</ul> {/* fills the ul with array of li */}
+            <p><b>Price:</b> £{cake.price}</p>
+            <p><b>Rating:</b> {cake.rating}/5</p>
+        </>
+    )
+
+}
+
+export default CakeDisplay;
+```
+
+## CI/CD
+
+### Continuous Integration
+
+- CI runs a **script** builds our app and runs the **entire test suite**
+- This means that if you are only working on the front end, you want to make sure that it does not break the back end
+- This also gives insight into if the backend code breaks your front end when merging
+- **CI pipelines** can catch bugs early and promotes gradual increments
+- It can guarantee that once code is pushed to production, it will not break other parts
+- **Cons:** requires additional resources (inhouse or outhouse), team testing culture must be solid and robust
+- **Tools:** Jenkins, CircleCI, CodeShip, GitHub Actions
+
+### Continuous Deployment
+
+- CD is the **automation of both delivery and integration**
+- Enables teams to **continuously deliver features** rather than wait for release cycles
+- **Relies** on existing CI pipeline
+- Once running it speeds up delivery of features considerably
+- If it's robust, it is much safer and can release new features seamlessly
+- It relies on the CI pipeline to catch errors - any shortcomings could cause app breaking bugs to slip through
+- **High initial cost**
+- Tools are similar to CI 
+- Way it works is that new deployment would take on the new traffic whereas old deployment would handle the existing traffic it had
 

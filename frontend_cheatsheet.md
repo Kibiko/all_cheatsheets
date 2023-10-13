@@ -56,9 +56,24 @@
             - <a href="#components">Components</a></details>
         * [Bakery - Cake Example](#bakery---cake-example)
         * [CI & CD](#cicd)
-        
+        * [Errors and Exceptions](#errors-and-exception)
+    * Week 10 -
+        * [Bakery - Extended Example](#bakery---extended-example)
+        * <details><summary><a href="#useeffect---colour-picker">UseEffect - Colour Picker</a></summary>
+            - <a href="#sliders">Sliders</a><br>
+            - <a href="#implementing-useeffect">Implementing UseEffect</a></details>
+        * [Data Loading and UseEffect](#data-loading-and-useeffect)
+        * <details><summary><a href="#linking-front-end-to-back-end">Linking Front End to Back End</a></summary>
+            - <a href="#issues">Issues</a></details>
+        * <details><summary><a href="#react---final-tips">React - Final Tips</a></summary>
+            - <a href="#front-end-project">Front End Project</a></details>
+        * [Retrospective](#retrospective)
 
 ## Introduction
+
+`Highlight` + `[cmd + D]` (as many times as possible) + edit
+
+`[cmd + ctrl + space]` emoji entering
 
 ![intro](/images/javascript_intro.png)
 
@@ -1382,9 +1397,11 @@ const fetchDogImage = () => {
 fetchDogImage();
 ```
 
-This event comes back as a promise. This `Promise` object is telling us that they are starting it but it might not come back. It is the eventual completion (or failure) of an asynchronous operation and its resulting value.
+This event comes back as a promise. This `Promise` object is telling us that they are starting it but it might not come back. It is the eventual completion (or failure) of an asynchronous operation and its resulting value. This comes as `fufilled` or `rejected`.
 
 ![](/images/promise.png)
+
+At the time the promise is logged out, it is still pending. But when we open up the tab it is re-evaluated and the state is fufilled by the time.
 
 ### Response
 
@@ -1822,3 +1839,270 @@ export default CakeDisplay;
 - Tools are similar to CI 
 - Way it works is that new deployment would take on the new traffic whereas old deployment would handle the existing traffic it had
 
+## Errors and Exception
+
+`try` is saying test this block of code. We can throw a custom error in the block which essentially just creates it.
+
+`catch` is saying if the try block fails, what we should do next.
+
+```js
+const fetchCountryList = async () =>{
+    try{
+        const response = await fetch("https://restcountries.com/v3.1/all");
+        if(!response.ok){
+            throw new Error(`Fetch request failed with status code: ${response.status}`)
+        }
+        const jsonData = await response.json();
+        return jsonData;
+    } catch (error){
+        body.textContent = 'Error! ' + error.message;
+        console.log(error); //logs the error
+        alert(error); //creates a popup error
+    }
+}
+```
+
+## Bakery - Extended Example
+
+Here we make the cake list more dynamic and the ability to add cakes to the existing array of cakes.
+
+https://github.com/Kibiko/react_bakery_dynamic
+
+![](/images/bakery_component_diagram_extended.png)
+
+## UseEffect - Colour Picker
+
+![](/images/colour_diagram.png)
+
+![](/images/colour_component_diagram.png)
+
+### Sliders
+
+*ColourPickerContainer.js*
+```js
+import { useState } from "react";
+import Slider from "../components/Slider";
+
+const ColourPickerContainer = () => { 
+
+    const [red, setRed] = useState(parseInt(50));
+    const [green, setGreen] = useState(parseInt(50));
+    const [blue, setBlue] = useState(parseInt(50));
+    const [rgbValue, setRgbValue] = useState("");
+
+    return(
+        <>
+            <Slider colour="Red" value={red} onValueChange={setRed}/>
+            <Slider colour="Green" value={green} onValueChange={setGreen}/>
+            <Slider colour="Blue" value={blue} onValueChange={setBlue}/>
+        </>
+    )
+
+}
+
+export default ColourPickerContainer;
+```
+
+*Slider.js*
+```js
+const Slider = ({colour, value, onValueChange}) => {
+
+    const handleValueChange = (e) => {
+        onValueChange(parseInt(e.target.value));
+    }
+
+    return(
+        <>
+            <label htmlFor={colour}>{colour}</label>
+            <input
+                type="range"
+                id={colour}
+                value={value}
+                onChange={handleValueChange}
+            />
+            <p>{colour}: {value}</p>
+        </>
+    )
+}
+
+export default Slider;
+```
+
+### Implementing UseEffect
+
+In the colour picker example,
+
+*ColourPickerContainer.js*
+```js
+// rest of code
+
+    useEffect(() => {
+        const red255 = Math.ceil(red*2.55);
+        const green255 = Math.ceil(green*2.55);
+        const blue255 = Math.ceil(blue*2.55);
+        setRgbValue(`rgb(${red255}, ${green255}, ${blue255})`)
+    }, [red, green, blue]) //only things in array will trigger useEffect function when it changes. THIS IS IMPORTANT
+
+// rest of code
+```
+
+## Data Loading and UseEffect
+
+In this example, we load data from a film API of Aardman animations.
+
+`FilmContainer.js` -> `FilmList.js` -> `Film.js`
+
+`1. calls FilmList` -> `2. maps through films and returns film li items` -> `3. how to display film`
+
+When using the useEffect, the dependency array is very important because we want to mount the component but not fire a fetch every time that our data is loading in.
+
+*FilmContainer.js*
+```js
+import { useState, useEffect } from "react";
+import FilmList from "../components/FilmList";
+
+const FilmContainer = () => {
+
+    const [films, setFilms] = useState(null);
+
+    const loadData = async () => {
+        const response = await fetch("https://raw.githubusercontent.com/annahndr/annahndr.github.io/master/aardman_data/aardman.json");
+        const jsonData = await response.json();
+        setFilms(jsonData);
+    }
+
+    useEffect(() => {
+        loadData();
+    },[]); // <------- empty dependency array
+
+    return(
+        <>
+            <h1>Aardman Animations</h1>
+            { films ? <FilmList films={films}/> : <p>loading...</p> }
+        
+        </>
+    )
+};
+
+export default FilmContainer;
+```
+
+The empty dependency array makes sure that no other change will trigger it apart from the first `loadData()` method in the `useEffect` function.
+
+An issue with this is that the data is mapped before we do the API call after mounting the UseEffect. This comes in the form of a `mapping` error. In order to fix this, we can call a rendering at a certain point. We add the ternary operator to make sure it is not rendered until the `films` is not null.
+
+Another way around this would be to set the `useState` of the `films` to be an empty array so that there is something to `map` over even before the data is loaded into the films.
+
+We can filter the data as well for `truthy` values via,
+
+*Film.js*
+```js
+const Film = ({film}) => {
+
+    const castMembers = film.roles.filter((roles) => roles.voice) //filters the truthy roles.voice
+    .map((role) => { //then maps
+        return <li key={role.id}>{role.voice}</li>
+    });
+
+    return(
+        <>
+            <h2>{film.title}</h2>
+            <p>Released: {film.released}</p>
+            <p>About: {film.about}</p>
+            <ul>{castMembers}</ul>
+        </>
+    )
+
+};
+
+export default Film;
+```
+
+where not all the voices have a String, therefore we only take parts that have been filled out with a String (truthy).
+
+Below is the code for the intermediary `FilmList.js`,
+
+```js
+import Film from "./Film";
+
+const FilmList = ({films}) => {
+
+    const mappedFilms = films.map( (film) => {
+        return <Film film={film} key={film.id}/>
+    })
+
+    return(
+        <>
+            {mappedFilms}
+        </>
+    )
+
+};
+
+export default FilmList; 
+```
+
+## Linking Front End to Back End
+
+### Issues
+
+(BackEnd)
+
+CORS - Cross Origin Resource Sharing
+
+- we need to add a CORS configuration to allow a fetch to your localhost database
+- this occurs when one of the port domains running is trying to send requests to another port on your machine
+- this is implemented as a security since hackers would be able to send scripts from one port to another
+
+***Solution:***
+
+- Create a new configurations package at the same level as others
+- Create a file SpringGlobalConfig.java
+- 
+
+```java
+package com.bnta.chocolate.configurations;
+
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+@Configuration
+public class SpringGlobalConfig implements WebMvcConfigurer {
+
+    public void addCorsMappings(CorsRegistry registry){
+        registry.addMapping("/**") //any path pattern
+                .allowedOrigins("*") //allow everything - this could be set up to only allow certain IP addresses
+                .allowedHeaders("*") //headers would be things like application json headers, token authentication headers etc...
+                .allowedMethods("*"); //what kind of requests are allowed - GET, PUT, PATCH
+    }
+}
+```
+
+## React - Final Tips
+
+### Front End Project
+
+https://github.com/darkpoetOX/Restaurant_frontend
+
+## Retrospective
+
+These are used to reflect on the past project or sprint. Agile methodology has a planning, stand up everyday, execution of plan and retrospective. This is used not for singleing out people or venting but instead should be used to clearly go through the points that the team experienced and improvements for next project/sprint.
+
+*Useful website:* https://metroretro.io/
+
+- Good
+
+- Bad
+
+- Start
+
+- Stop
+
+- Actions - assign someone to do something
+
+![](/images/retrospective.png)
+
+<hr>
+
+[Back to Top](#frontend-cheatsheet)

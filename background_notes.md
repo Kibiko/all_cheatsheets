@@ -4,6 +4,7 @@
 
 - [Security by Design](#security-by-design)
 - [Ethical Standards](#ethical-standards)
+- [Deploying Web Apps to the Web](#deploying-web-apps-to-the-web)
 
 
 # Security by Design
@@ -219,6 +220,26 @@ In addition to the fine imposed by the ICO, the Dutch Data Protection Authority 
 
 ***How might the programs you have built so far, breach regulations?***
 
+## Deploying Web Apps to the Web
 
+Tools required:
+
+- Git
+- Docker
+- flyctl (fly.io terminal tool)
+
+### Fly.io
+
+`flyctl launch --local-only` - generates docker file
+
+docker build -t website .
+
+docker run
+
+`flyctl deploy --local-only`
+
+### GitHub Actions
+
+- CI/CD service provided by GitHub
 
 [Back To Top](#notes)
